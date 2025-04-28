@@ -17,6 +17,11 @@ const Card = styled.article`
   gap: 1rem;
 `;
 
+const TimeRange = styled.p`
+  font-size: 0.9rem;
+  color: ${({ theme }) => theme.colors.textSecondary};
+`;
+
 const TagList = styled.ul`
   display: flex;
   flex-wrap: wrap;
@@ -52,10 +57,15 @@ export default function EventCard({ event }: EventCardProps) {
   return (
     <Card>
       <h2>{event.name}</h2>
-      <time>
-        {formatDate(event.start)} {formatTime(event.start)} –{" "}
-        {formatDate(event.end)} {formatTime(event.end)}
-      </time>
+      <TimeRange>
+        <time dateTime={event.start}>
+          {formatDate(event.start)} {formatTime(event.start)}
+        </time>{" "}
+        –{" "}
+        <time dateTime={event.end}>
+          {formatDate(event.end)} {formatTime(event.end)}
+        </time>
+      </TimeRange>
       {event.preparation && (
         <p>
           <strong>Vorbereitung:</strong> {event.preparation}
