@@ -102,11 +102,10 @@ export default function Home() {
                 <li key={id}>
                   <section>
                     <h2>{name}</h2>
+                    <h3>Zeitraum</h3>
                     <p>
-                      Von: {startDay} um {startTime}
-                    </p>
-                    <p>
-                      Bis: {endDay} um {endTime}
+                      Vom {startDay} um {startTime} bis zum {endDay} um{" "}
+                      {endTime}
                     </p>
                     <h3>Welche Vorbereitung braucht es?</h3>
                     <p>{preparation}</p>
@@ -123,13 +122,14 @@ export default function Home() {
                         );
                       })}
                     </ol>
-                    <h3>Auf welche Pokemon sollte ich meinen Fokus legen?</h3>
+                    <h3>
+                      Auf welche Pokemon sollte ich wieso meinen Fokus legen?
+                    </h3>
                     <ol>
                       {focus.map(({ pokemonName, reasons }) => {
                         return (
                           <li key={pokemonName}>
                             <h4>{pokemonName}</h4>
-                            <p>Wieso?</p>
                             <ul>
                               {reasons.map((reasonId) => {
                                 const foundReason = focusReasons.find(
