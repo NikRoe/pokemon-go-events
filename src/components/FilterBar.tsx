@@ -8,6 +8,8 @@ interface FilterBarProps {
 
 const FilterContainer = styled.div`
   display: flex;
+  justify-content: center; /* Zentriert horizontal */
+  flex-wrap: wrap; /* falls es auf kleineren Geräten umbrechen muss */
   gap: 1rem;
   margin: 1rem 1.5rem;
 `;
