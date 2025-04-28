@@ -11,6 +11,14 @@ export default function Home() {
   const [activeFilter, setActiveFilter] = useState<EventFilter>(null);
 
   const filteredEvents = filterEvents(events, activeFilter);
+
+  function handleFilterClick(filter: EventFilter) {
+    if (filter === activeFilter) {
+      setActiveFilter(null);
+    } else {
+      setActiveFilter(filter);
+    }
+  }
   return (
     <>
       <Head>
@@ -20,7 +28,7 @@ export default function Home() {
         <Header />
         <FilterBar
           activeFilter={activeFilter}
-          setActiveFilter={setActiveFilter}
+          onFilterClick={handleFilterClick}
         />
         <EventsGrid events={filteredEvents} />
       </main>

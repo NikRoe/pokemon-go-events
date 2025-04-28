@@ -3,7 +3,7 @@ import { EventFilter } from "@/types/filter";
 
 interface FilterBarProps {
   activeFilter: EventFilter;
-  setActiveFilter: (filter: EventFilter) => void;
+  onFilterClick: (filter: EventFilter) => void;
 }
 
 const FilterContainer = styled.div`
@@ -31,39 +31,31 @@ const FilterButton = styled.button<{ $isActive: boolean }>`
 
 export default function FilterBar({
   activeFilter,
-  setActiveFilter,
+  onFilterClick,
 }: FilterBarProps) {
-  function handleFilterClick(filter: EventFilter) {
-    if (filter === activeFilter) {
-      setActiveFilter(null);
-    } else {
-      setActiveFilter(filter);
-    }
-  }
-
   return (
     <FilterContainer>
       <FilterButton
         $isActive={activeFilter === "active"}
-        onClick={() => handleFilterClick("active")}
+        onClick={() => onFilterClick("active")}
       >
         Aktiv
       </FilterButton>
       <FilterButton
         $isActive={activeFilter === "past"}
-        onClick={() => handleFilterClick("past")}
+        onClick={() => onFilterClick("past")}
       >
         Abgelaufen
       </FilterButton>
       <FilterButton
         $isActive={activeFilter === "upcoming"}
-        onClick={() => handleFilterClick("upcoming")}
+        onClick={() => onFilterClick("upcoming")}
       >
         Kommt bald
       </FilterButton>
       <FilterButton
         $isActive={activeFilter === null}
-        onClick={() => setActiveFilter(null)}
+        onClick={() => onFilterClick(null)}
       >
         Reset
       </FilterButton>
