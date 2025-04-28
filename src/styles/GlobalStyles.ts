@@ -19,6 +19,7 @@ export const GlobalStyles = createGlobalStyle`
     color: ${({ theme }) => theme.colors.textPrimary};
     line-height: 1.5;
     min-height: 100vh;
+    transition: background-color ease 0.5s, color ease 0.5s
   }
 
   a {
