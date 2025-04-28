@@ -5,7 +5,7 @@ interface EventCardProps {
   event: Event;
 }
 
-const Card = styled.div`
+const Card = styled.article`
   background-color: ${({ theme }) => theme.colors.surface};
   color: ${({ theme }) => theme.colors.textPrimary};
   padding: 1.5rem;
@@ -17,15 +17,15 @@ const Card = styled.div`
   gap: 1rem;
 `;
 
-const TagList = styled.div`
+const TagList = styled.ul`
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
 `;
 
-const Tag = styled.span`
-  background-color: ${({ theme }) => theme.colors.primary};
-  color: ${({ theme }) => theme.colors.textPrimary};
+const Tag = styled.li`
+  background-color: ${({ theme }) => theme.colors.secondary};
+  color: ${({ theme }) => theme.colors.background};
   padding: 0.25rem 0.5rem;
   border-radius: 8px;
   font-size: 0.875rem;
@@ -52,10 +52,10 @@ export default function EventCard({ event }: EventCardProps) {
   return (
     <Card>
       <h2>{event.name}</h2>
-      <p>
+      <time>
         {formatDate(event.start)} {formatTime(event.start)} –{" "}
         {formatDate(event.end)} {formatTime(event.end)}
-      </p>
+      </time>
       {event.preparation && (
         <p>
           <strong>Vorbereitung:</strong> {event.preparation}
