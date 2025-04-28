@@ -25,7 +25,7 @@ const Section = styled.section`
   padding: 1.5rem;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s ease;
+  transition: background-color 0.5s ease;
 `;
 
 const Title = styled.h1`
@@ -80,7 +80,7 @@ export default function EventDetailPage({ event }: EventDetailPageProps) {
 
       {event.specials.length > 0 && (
         <Section>
-          <SubTitle>Specials</SubTitle>
+          <SubTitle>Besonderheiten</SubTitle>
           <ul>
             {event.specials.map((specialId) => {
               const special = eventSpecials.find(
