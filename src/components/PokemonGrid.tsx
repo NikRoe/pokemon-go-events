@@ -24,6 +24,7 @@ const FocusCard = styled.div`
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 1rem;
   transition: background-color 0.3s ease;
 `;
@@ -46,30 +47,28 @@ export default function PokemonGrid({ event }: PokemonGridProps) {
   return (
     <FocusGrid>
       {event.focus.map((pokemon) => (
-        <div key={pokemon.pokemonName}>
-          <FocusCard>
-            <PokemonImageWrapper>
-              <Image
-                src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`}
-                alt={pokemon.pokemonName}
-                fill={true}
-              />
-              <figcaption style={{ textAlign: "center" }}>
-                <h3>{pokemon.pokemonName}</h3>
-              </figcaption>
-            </PokemonImageWrapper>
-            <div>
-              <ReasonsList>
-                {pokemon.reasons.map((reasonId) => {
-                  const reason = focusReasons.find((r) => r.id === reasonId);
-                  return reason ? (
-                    <li key={reasonId}>{reason.textContent}</li>
-                  ) : null;
-                })}
-              </ReasonsList>
-            </div>
-          </FocusCard>
-        </div>
+        <FocusCard key={pokemon.pokemonName}>
+          <PokemonImageWrapper>
+            <Image
+              src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`}
+              alt={pokemon.pokemonName}
+              fill={true}
+            />
+            <figcaption style={{ textAlign: "center" }}>
+              <h3>{pokemon.pokemonName}</h3>
+            </figcaption>
+          </PokemonImageWrapper>
+          <div>
+            <ReasonsList>
+              {pokemon.reasons.map((reasonId) => {
+                const reason = focusReasons.find((r) => r.id === reasonId);
+                return reason ? (
+                  <li key={reasonId}>{reason.textContent}</li>
+                ) : null;
+              })}
+            </ReasonsList>
+          </div>
+        </FocusCard>
       ))}
     </FocusGrid>
   );
