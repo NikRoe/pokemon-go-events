@@ -1,7 +1,7 @@
 export const focusReasons = [
   {
     id: 1,
-    textContent: "Kann während des Events aus Eiern schlüpfen",
+    textContent: "Kann aus Eiern schlüpfen",
   },
   {
     id: 2,
@@ -17,10 +17,10 @@ export const focusReasons = [
   },
   {
     id: 5,
-    textContent: "Shiny Boost",
+    textContent: "Shiny-Boost",
   },
   {
     id: 6,
-    textContent: "Wichtig für Platin-Medaille",
+    textContent: "Platin-Medaille",
   },
 ];
