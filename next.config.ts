@@ -6,6 +6,9 @@ const nextConfig: NextConfig = {
   compiler: {
     styledComponents: true,
   },
+  images: {
+    remotePatterns: [new URL("https://raw.githubusercontent.com/**")],
+  },
 };
 
 export default nextConfig;

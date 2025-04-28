@@ -6,6 +6,7 @@ export interface Event {
   preparation: string | null;
   specials: number[];
   focus: {
+    id: number;
     pokemonName: string;
     reasons: number[];
   }[];

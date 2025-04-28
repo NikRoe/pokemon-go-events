@@ -2,10 +2,10 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import { events } from "@/data/events";
 import { eventSpecials } from "@/data/eventSpecials";
-import { focusReasons } from "@/data/focusReasons";
 import { Event } from "@/types/event";
 import styled from "styled-components";
 import Link from "next/link";
+import PokemonGrid from "@/components/PokemonGrid";
 
 interface EventDetailPageProps {
   event: Event | null;
@@ -40,11 +40,6 @@ const SubTitle = styled.h2`
 
 const TimeInfo = styled.time`
   color: ${({ theme }) => theme.colors.textSecondary};
-`;
-
-const StyledList = styled.ul`
-  padding-left: 1.5rem;
-  list-style-type: disc;
 `;
 
 const BackLink = styled(Link)`
@@ -86,7 +81,7 @@ export default function EventDetailPage({ event }: EventDetailPageProps) {
       {event.specials.length > 0 && (
         <Section>
           <SubTitle>Specials</SubTitle>
-          <StyledList>
+          <ul>
             {event.specials.map((specialId) => {
               const special = eventSpecials.find(
                 (eventSpecial) => eventSpecial.id === specialId
@@ -95,30 +90,14 @@ export default function EventDetailPage({ event }: EventDetailPageProps) {
                 <li key={specialId}>{special.textContent}</li>
               ) : null;
             })}
-          </StyledList>
+          </ul>
         </Section>
       )}
 
       {event.focus.length > 0 && (
         <Section>
           <SubTitle>Fokussierte Pokémon</SubTitle>
-          <StyledList>
-            {event.focus.map((pokemon) => (
-              <li key={pokemon.pokemonName}>
-                <strong>{pokemon.pokemonName}</strong>
-                <ul>
-                  {pokemon.reasons.map((reasonId) => {
-                    const reason = focusReasons.find(
-                      (focusReason) => focusReason.id === reasonId
-                    );
-                    return reason ? (
-                      <li key={reasonId}>{reason.textContent}</li>
-                    ) : null;
-                  })}
-                </ul>
-              </li>
-            ))}
-          </StyledList>
+          <PokemonGrid event={event} />
         </Section>
       )}
 

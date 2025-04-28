@@ -8,22 +8,27 @@ export const events = [
     specials: [1, 2, 3],
     focus: [
       {
+        id: 447,
         pokemonName: "Riolu",
         reasons: [1, 2],
       },
       {
+        id: 129,
         pokemonName: "Karpador",
         reasons: [4, 5, 2, 6],
       },
       {
+        id: 333,
         pokemonName: "Wablu",
         reasons: [4, 5],
       },
       {
+        id: 821,
         pokemonName: "Meikro",
         reasons: [4, 3],
       },
       {
+        id: 848,
         pokemonName: "Toxel",
         reasons: [1],
       },
@@ -38,22 +43,27 @@ export const events = [
     specials: [1, 2, 3],
     focus: [
       {
+        id: 447,
         pokemonName: "Riolu",
         reasons: [1, 2],
       },
       {
+        id: 129,
         pokemonName: "Karpador",
         reasons: [4, 5, 2, 6],
       },
       {
+        id: 333,
         pokemonName: "Wablu",
         reasons: [4, 5],
       },
       {
+        id: 821,
         pokemonName: "Meikro",
         reasons: [4, 3],
       },
       {
+        id: 848,
         pokemonName: "Toxel",
         reasons: [1],
       },
@@ -68,22 +78,27 @@ export const events = [
     specials: [1, 2, 3],
     focus: [
       {
+        id: 447,
         pokemonName: "Riolu",
         reasons: [1, 2],
       },
       {
+        id: 129,
         pokemonName: "Karpador",
         reasons: [4, 5, 2, 6],
       },
       {
+        id: 333,
         pokemonName: "Wablu",
         reasons: [4, 5],
       },
       {
+        id: 821,
         pokemonName: "Meikro",
         reasons: [4, 3],
       },
       {
+        id: 848,
         pokemonName: "Toxel",
         reasons: [1],
       },
