@@ -1,6 +1,5 @@
 import EventsGrid from "@/components/EventsGrid";
 import FilterBar from "@/components/FilterBar";
-import Header from "@/components/Header";
 import { events } from "@/data/events";
 import { EventFilter } from "@/types/filter";
 import { filterEvents } from "@/utils/filterEvents";
@@ -25,7 +24,6 @@ export default function Home() {
         <title>Pokemon Go Events</title>
       </Head>
       <main>
-        <Header />
         <FilterBar
           activeFilter={activeFilter}
           onFilterClick={handleFilterClick}

@@ -26,7 +26,7 @@ const FocusCard = styled.div`
   align-items: center;
   justify-content: center;
   gap: 1rem;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.5s ease;
 `;
 
 const PokemonImageWrapper = styled.figure`
