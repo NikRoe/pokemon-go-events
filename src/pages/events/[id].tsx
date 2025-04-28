@@ -4,10 +4,60 @@ import { events } from "@/data/events";
 import { eventSpecials } from "@/data/eventSpecials";
 import { focusReasons } from "@/data/focusReasons";
 import { Event } from "@/types/event";
+import styled from "styled-components";
+import Link from "next/link";
 
 interface EventDetailPageProps {
   event: Event | null;
 }
+
+const Container = styled.main`
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+`;
+
+const Section = styled.section`
+  background-color: ${({ theme }) => theme.colors.surface};
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+`;
+
+const Title = styled.h1`
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+`;
+
+const SubTitle = styled.h2`
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+`;
+
+const TimeInfo = styled.time`
+  color: ${({ theme }) => theme.colors.textSecondary};
+`;
+
+const StyledList = styled.ul`
+  padding-left: 1.5rem;
+  list-style-type: disc;
+`;
+
+const BackLink = styled(Link)`
+  color: ${({ theme }) => theme.colors.primary};
+  font-weight: bold;
+  text-decoration: none;
+  margin-top: 2rem;
+  display: inline-block;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
 
 export default function EventDetailPage({ event }: EventDetailPageProps) {
   const router = useRouter();
@@ -21,24 +71,22 @@ export default function EventDetailPage({ event }: EventDetailPageProps) {
   }
 
   return (
-    <div style={{ padding: "2rem" }}>
-      <h1>{event.name}</h1>
-      <p>
+    <Container>
+      <Title>{event.name}</Title>
+      <TimeInfo>
         {new Date(event.start).toLocaleString("de-DE")} –{" "}
         {new Date(event.end).toLocaleString("de-DE")}
-      </p>
+      </TimeInfo>
 
-      {event.preparation && (
-        <section>
-          <h2>Vorbereitung</h2>
-          <p>{event.preparation}</p>
-        </section>
-      )}
+      <Section>
+        <SubTitle>Vorbereitung</SubTitle>
+        <p>{event.preparation || "Keine"}</p>
+      </Section>
 
       {event.specials.length > 0 && (
-        <section>
-          <h2>Specials</h2>
-          <ul>
+        <Section>
+          <SubTitle>Specials</SubTitle>
+          <StyledList>
             {event.specials.map((specialId) => {
               const special = eventSpecials.find(
                 (eventSpecial) => eventSpecial.id === specialId
@@ -47,14 +95,14 @@ export default function EventDetailPage({ event }: EventDetailPageProps) {
                 <li key={specialId}>{special.textContent}</li>
               ) : null;
             })}
-          </ul>
-        </section>
+          </StyledList>
+        </Section>
       )}
 
       {event.focus.length > 0 && (
-        <section>
-          <h2>Fokussierte Pokémon</h2>
-          <ul>
+        <Section>
+          <SubTitle>Fokussierte Pokémon</SubTitle>
+          <StyledList>
             {event.focus.map((pokemon) => (
               <li key={pokemon.pokemonName}>
                 <strong>{pokemon.pokemonName}</strong>
@@ -70,10 +118,12 @@ export default function EventDetailPage({ event }: EventDetailPageProps) {
                 </ul>
               </li>
             ))}
-          </ul>
-        </section>
+          </StyledList>
+        </Section>
       )}
-    </div>
+
+      <BackLink href="/">← Zurück zur Übersicht</BackLink>
+    </Container>
   );
 }
 

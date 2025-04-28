@@ -34,7 +34,7 @@ export const events = [
     name: "Heranwachsen 2",
     start: "2025-05-02T10:00:00",
     end: "2025-05-07T20:00:00",
-    preparation: "Eier, aus denen nichts Spannendes schlüpfen kann ausbrüten.",
+    preparation: null,
     specials: [1, 2, 3],
     focus: [
       {

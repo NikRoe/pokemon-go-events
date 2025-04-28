@@ -1,13 +1,13 @@
 export interface Event {
   id: number;
   name: string;
-  start: string; // ISO-Zeitstempel
-  end: string; // ISO-Zeitstempel
-  preparation?: string;
-  specials: number[]; // IDs aus eventSpecials
+  start: string;
+  end: string;
+  preparation: string | null;
+  specials: number[];
   focus: {
     pokemonName: string;
-    reasons: number[]; // IDs aus focusReasons
+    reasons: number[];
   }[];
 }
 
