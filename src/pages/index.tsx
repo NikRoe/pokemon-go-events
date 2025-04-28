@@ -1,4 +1,4 @@
-import EventsGrid from "@/components/EventGrid";
+import EventsGrid from "@/components/EventsGrid";
 import FilterBar from "@/components/FilterBar";
 import Header from "@/components/Header";
 import { events } from "@/data";
