@@ -1,5 +1,6 @@
 import { Event } from "@/types/event";
 import styled from "styled-components";
+import Link from "next/link";
 
 interface EventCardProps {
   event: Event;
@@ -56,7 +57,9 @@ function formatTime(isoString: string): string {
 export default function EventCard({ event }: EventCardProps) {
   return (
     <Card>
-      <h2>{event.name}</h2>
+      <Link href={`/events/${event.id}`}>
+        <h2>{event.name}</h2>
+      </Link>
       <TimeRange>
         <time dateTime={event.start}>
           {formatDate(event.start)} {formatTime(event.start)}
