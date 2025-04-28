@@ -22,7 +22,7 @@ export default function Home() {
           activeFilter={activeFilter}
           setActiveFilter={setActiveFilter}
         />
-        <EventsGrid events={filteredEvents} />;
+        <EventsGrid events={filteredEvents} />
       </main>
     </>
   );

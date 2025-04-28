@@ -29,7 +29,10 @@ const FilterButton = styled.button<{ $isActive: boolean }>`
   }
 `;
 
-function FilterBar({ activeFilter, setActiveFilter }: FilterBarProps) {
+export default function FilterBar({
+  activeFilter,
+  setActiveFilter,
+}: FilterBarProps) {
   function handleFilterClick(filter: EventFilter) {
     if (filter === activeFilter) {
       setActiveFilter(null);
@@ -67,5 +70,3 @@ function FilterBar({ activeFilter, setActiveFilter }: FilterBarProps) {
     </FilterContainer>
   );
 }
-
-export default FilterBar;
