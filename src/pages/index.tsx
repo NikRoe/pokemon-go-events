@@ -1,3 +1,4 @@
+import Header from "@/components/Header";
 import Head from "next/head";
 
 const eventSpecials = [
@@ -84,7 +85,7 @@ export default function Home() {
         <title>Pokemon Go Events</title>
       </Head>
       <main>
-        <h1>Pokemon Go Events Übersicht</h1>
+        <Header />
         <ul>
           {events.map(
             ({
