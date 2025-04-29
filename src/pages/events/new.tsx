@@ -114,6 +114,8 @@ interface NewEventPageProps {
 export default function NewEventPage({ onAddEvent }: NewEventPageProps) {
   const router = useRouter();
 
+  const [searchTerm, setSearchTerm] = useState("");
+
   const [selectedSpecials, setSelectedSpecials] = useState<number[]>([]);
   const [selectedFocus, setSelectedFocus] = useState<
     { pokemonId: number; reasons: number[] }[]
@@ -181,6 +183,17 @@ export default function NewEventPage({ onAddEvent }: NewEventPageProps) {
 
     router.push("/");
   }
+
+  const filteredPokemon = focusPokemon
+    .filter(
+      (pokemon) =>
+        pokemon.pokemonName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        pokemon.id.toString() === searchTerm
+    )
+    .filter(
+      (pokemon) =>
+        !selectedFocus.some((focus) => focus.pokemonId === pokemon.id)
+    );
 
   return (
     <PageContainer>
@@ -263,19 +276,53 @@ export default function NewEventPage({ onAddEvent }: NewEventPageProps) {
 
         <FormGroup>
           <Label htmlFor="focus">Fokus-Pokémon*</Label>
-          {focusPokemon.map((pokemon) => {
-            const focusEntry = selectedFocus.find(
-              (entry) => entry.pokemonId === pokemon.id
+
+          <FormGroup>
+            <Label htmlFor="search">Pokémon suchen</Label>
+            <Input
+              id="search"
+              type="text"
+              value={searchTerm}
+              onChange={(event) => setSearchTerm(event.target.value)}
+              placeholder="Name oder ID eingeben..."
+            />
+          </FormGroup>
+          {searchTerm && (
+            <List>
+              {filteredPokemon.map((pokemon) => (
+                <ListItem key={pokemon.id}>
+                  {pokemon.pokemonName} (ID: {pokemon.id})
+                  <RemoveButton
+                    type="button"
+                    onClick={() => {
+                      setSelectedFocus((prev) => [
+                        ...prev,
+                        { pokemonId: pokemon.id, reasons: [] },
+                      ]);
+                      setSearchTerm("");
+                    }}
+                  >
+                    Hinzufügen
+                  </RemoveButton>
+                </ListItem>
+              ))}
+            </List>
+          )}
+          {selectedFocus.map((focusEntry) => {
+            const singlePokemon = focusPokemon.find(
+              (p) => p.id === focusEntry.pokemonId
             );
 
+            if (!singlePokemon) return null;
+
             return (
-              <div key={pokemon.id} style={{ marginBottom: "1rem" }}>
-                <strong>{pokemon.pokemonName}</strong>
+              <div key={singlePokemon.id} style={{ marginBottom: "1rem" }}>
+                <strong>{singlePokemon?.pokemonName}</strong>
                 <Select
                   onChange={(event) => {
                     const selected = Number(event.target.value);
                     if (selected) {
-                      handleFocusChange(pokemon.id, selected);
+                      handleFocusChange(singlePokemon.id, selected);
                     }
                   }}
                   value=""
@@ -308,7 +355,7 @@ export default function NewEventPage({ onAddEvent }: NewEventPageProps) {
                           <RemoveButton
                             type="button"
                             onClick={() =>
-                              handleFocusChange(pokemon.id, reasonId)
+                              handleFocusChange(singlePokemon.id, reasonId)
                             }
                             aria-label={`"${reason.textContent}" entfernen`}
                           >
