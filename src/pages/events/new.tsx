@@ -4,6 +4,69 @@ import { eventSpecials } from "@/data/eventSpecials";
 import { focusReasons } from "@/data/focusReasons";
 import { focusPokemon } from "@/data/focusPokemon";
 import { Event } from "@/types/event";
+import styled from "styled-components";
+
+const PageContainer = styled.div`
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+`;
+
+const FormContainer = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
+
+const FormGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`;
+
+const Label = styled.label`
+  font-weight: bold;
+`;
+
+const Input = styled.input`
+  padding: 0.5rem;
+  border: 1px solid ${({ theme }) => theme.colors.textSecondary};
+  border-radius: 8px;
+  background-color: ${({ theme }) => theme.colors.surface};
+  color: ${({ theme }) => theme.colors.textPrimary};
+`;
+
+const Textarea = styled.textarea`
+  padding: 0.5rem;
+  border: 1px solid ${({ theme }) => theme.colors.textSecondary};
+  border-radius: 8px;
+  background-color: ${({ theme }) => theme.colors.surface};
+  color: ${({ theme }) => theme.colors.textPrimary};
+`;
+
+const Select = styled.select`
+  padding: 0.5rem;
+  border: 1px solid ${({ theme }) => theme.colors.textSecondary};
+  border-radius: 8px;
+  background-color: ${({ theme }) => theme.colors.surface};
+  color: ${({ theme }) => theme.colors.textPrimary};
+`;
+
+const SubmitButton = styled.button`
+  padding: 0.75rem 1.5rem;
+  background-color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.textPrimary};
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.secondary};
+  }
+`;
 
 interface NewEventPageProps {
   onAddEvent: (newEvent: Event) => void;
@@ -67,32 +130,32 @@ export default function NewEventPage({ onAddEvent }: NewEventPageProps) {
   }
 
   return (
-    <div style={{ padding: "2rem" }}>
+    <PageContainer>
       <h1>Neues Event hinzufügen</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="name">Event-Name*</label>
-          <input id="name" name="name" required />
-        </div>
+      <FormContainer onSubmit={handleSubmit}>
+        <FormGroup>
+          <Label htmlFor="name">Event-Name*</Label>
+          <Input id="name" name="name" required />
+        </FormGroup>
 
-        <div>
-          <label htmlFor="start">Startzeit*</label>
-          <input id="start" name="start" type="datetime-local" required />
-        </div>
+        <FormGroup>
+          <Label htmlFor="start">Startzeit*</Label>
+          <Input id="start" name="start" type="datetime-local" required />
+        </FormGroup>
 
-        <div>
-          <label htmlFor="end">Endzeit*</label>
-          <input id="end" name="end" type="datetime-local" required />
-        </div>
+        <FormGroup>
+          <Label htmlFor="end">Endzeit*</Label>
+          <Input id="end" name="end" type="datetime-local" required />
+        </FormGroup>
 
-        <div>
-          <label htmlFor="preparation">Vorbereitung</label>
-          <textarea id="preparation" />
-        </div>
+        <FormGroup>
+          <Label htmlFor="preparation">Vorbereitung</Label>
+          <Textarea id="preparation" />
+        </FormGroup>
 
-        <div>
-          <label htmlFor="specials">Besonderheiten*</label>
-          <select
+        <FormGroup>
+          <Label htmlFor="specials">Besonderheiten*</Label>
+          <Select
             id="specials"
             name="specials"
             multiple
@@ -110,15 +173,15 @@ export default function NewEventPage({ onAddEvent }: NewEventPageProps) {
                 {special.textContent}
               </option>
             ))}
-          </select>
-        </div>
+          </Select>
+        </FormGroup>
 
-        <div>
-          <label htmlFor="focus">Fokus-Pokémon*</label>
+        <FormGroup>
+          <Label htmlFor="focus">Fokus-Pokémon*</Label>
           {focusPokemon.map((pokemon) => (
-            <div key={pokemon.id} style={{ marginBottom: "1rem" }}>
+            <FormGroup key={pokemon.id} style={{ marginBottom: "1rem" }}>
               <strong>{pokemon.pokemonName}</strong>
-              <select
+              <Select
                 id="focus"
                 name="focus"
                 multiple
@@ -134,13 +197,13 @@ export default function NewEventPage({ onAddEvent }: NewEventPageProps) {
                     {reason.textContent}
                   </option>
                 ))}
-              </select>
-            </div>
+              </Select>
+            </FormGroup>
           ))}
-        </div>
+        </FormGroup>
 
-        <button type="submit">Event speichern</button>
-      </form>
-    </div>
+        <SubmitButton type="submit">Event speichern</SubmitButton>
+      </FormContainer>
+    </PageContainer>
   );
 }
