@@ -6,6 +6,7 @@ import { Event } from "@/types/event";
 import styled from "styled-components";
 import Remove from "@/assets/icons/remove.svg";
 import { pokemonList } from "@/data/pokemonList";
+import Image from "next/image";
 
 const PageContainer = styled.div`
   max-width: 800px;
@@ -45,11 +46,12 @@ const Input = styled.input`
 const List = styled.ul`
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-evenly;
   gap: 0.5rem;
   margin-top: 0.5rem;
 `;
 
-const ListItem = styled.li`
+const ListItem = styled.li<{ $isClickable?: boolean }>`
   background-color: ${({ theme }) => theme.colors.primary};
   color: ${({ theme }) => theme.colors.textPrimary};
   border-radius: 1rem;
@@ -57,6 +59,11 @@ const ListItem = styled.li`
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  width: 250px;
+
+  &:hover {
+    cursor: ${({ $isClickable }) => ($isClickable ? "pointer" : "drag")};
+  }
 `;
 
 const RemoveButton = styled.button`
@@ -136,6 +143,13 @@ const FocusCardHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+`;
+
+const PokemonImageWrapper = styled.figure`
+  flex-shrink: 0;
+  width: 100px;
+  height: 100px;
+  position: relative;
 `;
 
 const FocusSelect = styled(Select)`
@@ -334,21 +348,28 @@ export default function NewEventPage({ onAddEvent }: NewEventPageProps) {
           </FormGroup>
           {searchTerm && (
             <List>
-              {filteredPokemon.map((pokemon) => (
-                <ListItem key={pokemon.id}>
-                  {pokemon.pokemonName} (ID: {pokemon.id})
-                  <RemoveButton
-                    type="button"
-                    onClick={() => {
-                      setSelectedFocus((prev) => [
-                        ...prev,
-                        { pokemonId: pokemon.id, reasons: [] },
-                      ]);
-                      setSearchTerm("");
-                    }}
-                  >
-                    Hinzufügen
-                  </RemoveButton>
+              {filteredPokemon.slice(0, 20).map((pokemon) => (
+                <ListItem
+                  key={pokemon.id}
+                  onClick={() => {
+                    setSelectedFocus((prev) => [
+                      ...prev,
+                      { pokemonId: pokemon.id, reasons: [] },
+                    ]);
+                  }}
+                  $isClickable={true}
+                >
+                  <PokemonImageWrapper>
+                    <Image
+                      src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`}
+                      alt={pokemon.pokemonName}
+                      fill={true}
+                    />
+                  </PokemonImageWrapper>
+
+                  <h3>
+                    {pokemon.pokemonName} <br /> (ID: {pokemon.id})
+                  </h3>
                 </ListItem>
               ))}
             </List>
