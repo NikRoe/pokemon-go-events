@@ -107,6 +107,51 @@ const SubmitButton = styled.button`
   }
 `;
 
+const FocusCardContainer = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+
+  @media (min-width: 700px) {
+    grid-template-columns: repeat(2, minmax(200px, 1fr));
+  }
+`;
+
+const FocusCard = styled.div`
+  background-color: ${({ theme }) => theme.colors.surface};
+  border: 1px solid ${({ theme }) => theme.colors.primary};
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+`;
+
+const FocusCardHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const FocusSelect = styled(Select)`
+  margin-top: 0.5rem;
+`;
+
+const ReasonsList = styled(List)`
+  margin-top: 0.5rem;
+`;
+
+const ReasonItem = styled(ListItem)`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
 interface NewEventPageProps {
   onAddEvent: (newEvent: Event) => void;
 }
@@ -308,67 +353,83 @@ export default function NewEventPage({ onAddEvent }: NewEventPageProps) {
               ))}
             </List>
           )}
-          {selectedFocus.map((focusEntry) => {
-            const singlePokemon = focusPokemon.find(
-              (p) => p.id === focusEntry.pokemonId
-            );
+          <FocusCardContainer>
+            {selectedFocus.map((focusEntry) => {
+              const singlePokemon = focusPokemon.find(
+                (p) => p.id === focusEntry.pokemonId
+              );
 
-            if (!singlePokemon) return null;
+              if (!singlePokemon) return null;
 
-            return (
-              <div key={singlePokemon.id} style={{ marginBottom: "1rem" }}>
-                <strong>{singlePokemon?.pokemonName}</strong>
-                <Select
-                  onChange={(event) => {
-                    const selected = Number(event.target.value);
-                    if (selected) {
-                      handleFocusChange(singlePokemon.id, selected);
-                    }
-                  }}
-                  value=""
-                >
-                  <option value="">
-                    ---Wähle einen oder mehrere Gründe aus---
-                  </option>
-                  {focusReasons
-                    .filter(
-                      (reason) => !focusEntry?.reasons.includes(reason.id)
-                    )
-                    .map((reason) => (
-                      <option key={reason.id} value={reason.id}>
-                        {reason.textContent}
-                      </option>
-                    ))}
-                </Select>
+              return (
+                <FocusCard key={singlePokemon.id}>
+                  <FocusCardHeader>
+                    <strong>{singlePokemon?.pokemonName}</strong>
+                    <RemoveButton
+                      type="button"
+                      onClick={() =>
+                        setSelectedFocus(
+                          selectedFocus.filter(
+                            (focus) => focus.pokemonId !== singlePokemon.id
+                          )
+                        )
+                      }
+                      aria-label={`"${singlePokemon.pokemonName}" entfernen`}
+                    >
+                      <Remove width={20} height={20} />
+                    </RemoveButton>
+                  </FocusCardHeader>
 
-                {focusEntry && focusEntry.reasons.length > 0 && (
-                  <List>
-                    {focusEntry.reasons.map((reasonId) => {
-                      const reason = focusReasons.find(
-                        (focusReason) => focusReason.id === reasonId
-                      );
-                      if (!reason) return null;
-
-                      return (
-                        <ListItem key={reasonId}>
+                  <FocusSelect
+                    onChange={(event) => {
+                      const selected = Number(event.target.value);
+                      if (selected) {
+                        handleFocusChange(singlePokemon.id, selected);
+                      }
+                    }}
+                    value=""
+                  >
+                    <option value="">--- Wähle Gründe aus ---</option>
+                    {focusReasons
+                      .filter(
+                        (reason) => !focusEntry?.reasons.includes(reason.id)
+                      )
+                      .map((reason) => (
+                        <option key={reason.id} value={reason.id}>
                           {reason.textContent}
-                          <RemoveButton
-                            type="button"
-                            onClick={() =>
-                              handleFocusChange(singlePokemon.id, reasonId)
-                            }
-                            aria-label={`"${reason.textContent}" entfernen`}
-                          >
-                            <Remove width={20} height={20} />
-                          </RemoveButton>
-                        </ListItem>
-                      );
-                    })}
-                  </List>
-                )}
-              </div>
-            );
-          })}
+                        </option>
+                      ))}
+                  </FocusSelect>
+
+                  {focusEntry && focusEntry.reasons.length > 0 && (
+                    <ReasonsList>
+                      {focusEntry.reasons.map((reasonId) => {
+                        const reason = focusReasons.find(
+                          (focusReason) => focusReason.id === reasonId
+                        );
+                        if (!reason) return null;
+
+                        return (
+                          <ReasonItem key={reasonId}>
+                            {reason.textContent}
+                            <RemoveButton
+                              type="button"
+                              onClick={() =>
+                                handleFocusChange(singlePokemon.id, reasonId)
+                              }
+                              aria-label={`"${reason.textContent}" entfernen`}
+                            >
+                              <Remove width={20} height={20} />
+                            </RemoveButton>
+                          </ReasonItem>
+                        );
+                      })}
+                    </ReasonsList>
+                  )}
+                </FocusCard>
+              );
+            })}
+          </FocusCardContainer>
         </FormGroup>
 
         <SubmitButton type="submit">Event speichern</SubmitButton>
