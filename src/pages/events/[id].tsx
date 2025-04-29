@@ -6,6 +6,7 @@ import { Event } from "@/types/event";
 import styled from "styled-components";
 import Link from "next/link";
 import PokemonGrid from "@/components/PokemonGrid";
+import Head from "next/head";
 
 interface EventDetailPageProps {
   event: Event | null;
@@ -66,43 +67,52 @@ export default function EventDetailPage({ event }: EventDetailPageProps) {
   }
 
   return (
-    <Container>
-      <Title>{event.name}</Title>
-      <TimeInfo>
-        {new Date(event.start).toLocaleString("de-DE")} –{" "}
-        {new Date(event.end).toLocaleString("de-DE")}
-      </TimeInfo>
+    <>
+      <Head>
+        <title>{`${event.name} | Pokémon GO Events`}</title>
+        <meta
+          name="description"
+          content={`Alle Infos zum Event "${event.name}" in Pokémon GO.`}
+        />
+      </Head>
+      <Container>
+        <Title>{event.name}</Title>
+        <TimeInfo>
+          {new Date(event.start).toLocaleString("de-DE")} –{" "}
+          {new Date(event.end).toLocaleString("de-DE")}
+        </TimeInfo>
 
-      <Section>
-        <SubTitle>Vorbereitung</SubTitle>
-        <p>{event.preparation || "Keine"}</p>
-      </Section>
-
-      {event.specials.length > 0 && (
         <Section>
-          <SubTitle>Besonderheiten</SubTitle>
-          <ul>
-            {event.specials.map((specialId) => {
-              const special = eventSpecials.find(
-                (eventSpecial) => eventSpecial.id === specialId
-              );
-              return special ? (
-                <li key={specialId}>{special.textContent}</li>
-              ) : null;
-            })}
-          </ul>
+          <SubTitle>Vorbereitung</SubTitle>
+          <p>{event.preparation || "Keine"}</p>
         </Section>
-      )}
 
-      {event.focus.length > 0 && (
-        <Section>
-          <SubTitle>Fokussierte Pokémon</SubTitle>
-          <PokemonGrid event={event} />
-        </Section>
-      )}
+        {event.specials.length > 0 && (
+          <Section>
+            <SubTitle>Besonderheiten</SubTitle>
+            <ul>
+              {event.specials.map((specialId) => {
+                const special = eventSpecials.find(
+                  (eventSpecial) => eventSpecial.id === specialId
+                );
+                return special ? (
+                  <li key={specialId}>{special.textContent}</li>
+                ) : null;
+              })}
+            </ul>
+          </Section>
+        )}
 
-      <BackLink href="/">← Zurück zur Übersicht</BackLink>
-    </Container>
+        {event.focus.length > 0 && (
+          <Section>
+            <SubTitle>Fokussierte Pokémon</SubTitle>
+            <PokemonGrid event={event} />
+          </Section>
+        )}
+
+        <BackLink href="/">← Zurück zur Übersicht</BackLink>
+      </Container>
+    </>
   );
 }
 
