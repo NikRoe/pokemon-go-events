@@ -2,10 +2,10 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { eventSpecials } from "@/data/eventSpecials";
 import { focusReasons } from "@/data/focusReasons";
-import { focusPokemon } from "@/data/focusPokemon";
 import { Event } from "@/types/event";
 import styled from "styled-components";
 import Remove from "@/assets/icons/remove.svg";
+import { pokemonList } from "@/data/pokemonList";
 
 const PageContainer = styled.div`
   max-width: 800px;
@@ -207,7 +207,7 @@ export default function NewEventPage({ onAddEvent }: NewEventPageProps) {
 
     const focus = selectedFocus.map((focus) => {
       const name =
-        focusPokemon.find((pokemon) => pokemon.id === focus.pokemonId)
+        pokemonList.find((pokemon) => pokemon.id === focus.pokemonId)
           ?.pokemonName ?? "Unbekannt";
       return {
         id: focus.pokemonId,
@@ -229,7 +229,7 @@ export default function NewEventPage({ onAddEvent }: NewEventPageProps) {
     router.push("/");
   }
 
-  const filteredPokemon = focusPokemon
+  const filteredPokemon = pokemonList
     .filter(
       (pokemon) =>
         pokemon.pokemonName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -355,7 +355,7 @@ export default function NewEventPage({ onAddEvent }: NewEventPageProps) {
           )}
           <FocusCardContainer>
             {selectedFocus.map((focusEntry) => {
-              const singlePokemon = focusPokemon.find(
+              const singlePokemon = pokemonList.find(
                 (p) => p.id === focusEntry.pokemonId
               );
 
