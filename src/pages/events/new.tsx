@@ -51,7 +51,7 @@ const List = styled.ul`
   margin-top: 0.5rem;
 `;
 
-const ListItem = styled.li<{ $isClickable?: boolean }>`
+const ListItem = styled.li<{ $isClickable?: boolean; $searchResult?: boolean }>`
   background-color: ${({ theme }) => theme.colors.primary};
   color: ${({ theme }) => theme.colors.textPrimary};
   border-radius: 1rem;
@@ -60,6 +60,7 @@ const ListItem = styled.li<{ $isClickable?: boolean }>`
   align-items: center;
   gap: 0.5rem;
   width: 250px;
+  width: ${({ $searchResult }) => ($searchResult ? "300px" : "auto")};
 
   &:hover {
     cursor: ${({ $isClickable }) => ($isClickable ? "pointer" : "drag")};
@@ -133,6 +134,7 @@ const FocusCard = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  width: 100%;
 
   margin-left: auto;
   margin-right: auto;
@@ -147,8 +149,8 @@ const FocusCardHeader = styled.div`
 
 const PokemonImageWrapper = styled.figure`
   flex-shrink: 0;
-  width: 100px;
-  height: 100px;
+  width: 128px;
+  height: 128px;
   position: relative;
 `;
 
@@ -348,7 +350,7 @@ export default function NewEventPage({ onAddEvent }: NewEventPageProps) {
           </FormGroup>
           {searchTerm && (
             <List>
-              {filteredPokemon.slice(0, 20).map((pokemon) => (
+              {filteredPokemon.slice(0, 10).map((pokemon) => (
                 <ListItem
                   key={pokemon.id}
                   onClick={() => {
@@ -357,7 +359,8 @@ export default function NewEventPage({ onAddEvent }: NewEventPageProps) {
                       { pokemonId: pokemon.id, reasons: [] },
                     ]);
                   }}
-                  $isClickable={true}
+                  $isClickable
+                  $searchResult
                 >
                   <PokemonImageWrapper>
                     <Image
@@ -385,6 +388,14 @@ export default function NewEventPage({ onAddEvent }: NewEventPageProps) {
               return (
                 <FocusCard key={singlePokemon.id}>
                   <FocusCardHeader>
+                    <PokemonImageWrapper>
+                      <Image
+                        src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${singlePokemon.id}.png`}
+                        alt={singlePokemon.pokemonName}
+                        fill={true}
+                      />
+                    </PokemonImageWrapper>
+
                     <strong>{singlePokemon?.pokemonName}</strong>
                     <RemoveButton
                       type="button"
