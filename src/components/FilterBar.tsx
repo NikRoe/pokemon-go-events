@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { EventFilter } from "@/types/filter";
+import ResetIcon from "@/assets/icons/reset.svg";
 
 interface FilterBarProps {
   activeFilter: EventFilter;
@@ -8,8 +9,8 @@ interface FilterBarProps {
 
 const FilterContainer = styled.div`
   display: flex;
-  justify-content: center; /* Zentriert horizontal */
-  flex-wrap: wrap; /* falls es auf kleineren Geräten umbrechen muss */
+  justify-content: center;
+  flex-wrap: wrap;
   gap: 1rem;
   margin: 1rem 1.5rem;
 `;
@@ -28,6 +29,10 @@ const FilterButton = styled.button<{ $isActive: boolean }>`
   &:hover {
     background-color: ${({ theme }) => theme.colors.primary};
     color: ${({ theme }) => theme.colors.textPrimary};
+  }
+
+  svg {
+    fill: currentColor;
   }
 `;
 
@@ -59,7 +64,7 @@ export default function FilterBar({
         $isActive={activeFilter === null}
         onClick={() => onFilterClick(null)}
       >
-        Reset
+        <ResetIcon width={20} height={20} />
       </FilterButton>
     </FilterContainer>
   );

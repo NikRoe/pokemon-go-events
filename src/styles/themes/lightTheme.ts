@@ -4,9 +4,9 @@ export const lightTheme: DefaultTheme = {
   colors: {
     background: "#ffffff",
     surface: "#f5f5f5",
-    primary: "#6200ee",
+    primary: "#bb86fc",
     secondary: "#018786",
-    textPrimary: "#000000",
+    textPrimary: "#121212",
     textSecondary: "#555555",
   },
 };

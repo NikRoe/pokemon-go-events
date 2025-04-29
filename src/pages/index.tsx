@@ -4,10 +4,15 @@ import { events } from "@/data/events";
 import { EventFilter } from "@/types/filter";
 import { filterEvents } from "@/utils/filterEvents";
 import Head from "next/head";
-import { useState } from "react";
+import useLocalStorageState from "use-local-storage-state";
 
 export default function Home() {
-  const [activeFilter, setActiveFilter] = useState<EventFilter>(null);
+  const [activeFilter, setActiveFilter] = useLocalStorageState<EventFilter>(
+    "activeFilter",
+    {
+      defaultValue: "active",
+    }
+  );
 
   const filteredEvents = filterEvents(events, activeFilter);
 
