@@ -225,11 +225,13 @@ export default function NewEventPage({ onAddEvent }: NewEventPageProps) {
             <option value="">
               ---Wähle eine oder mehrere Besonderheiten aus---
             </option>
-            {eventSpecials.map((special) => (
-              <option key={special.id} value={special.id}>
-                {special.textContent}
-              </option>
-            ))}
+            {eventSpecials
+              .filter((special) => !selectedSpecials?.includes(special.id))
+              .map((special) => (
+                <option key={special.id} value={special.id}>
+                  {special.textContent}
+                </option>
+              ))}
           </Select>
         </FormGroup>
 
@@ -281,11 +283,15 @@ export default function NewEventPage({ onAddEvent }: NewEventPageProps) {
                   <option value="">
                     ---Wähle einen oder mehrere Gründe aus---
                   </option>
-                  {focusReasons.map((reason) => (
-                    <option key={reason.id} value={reason.id}>
-                      {reason.textContent}
-                    </option>
-                  ))}
+                  {focusReasons
+                    .filter(
+                      (reason) => !focusEntry?.reasons.includes(reason.id)
+                    )
+                    .map((reason) => (
+                      <option key={reason.id} value={reason.id}>
+                        {reason.textContent}
+                      </option>
+                    ))}
                 </Select>
 
                 {focusEntry && focusEntry.reasons.length > 0 && (
