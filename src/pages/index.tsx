@@ -1,12 +1,16 @@
 import EventsGrid from "@/components/EventsGrid";
 import FilterBar from "@/components/FilterBar";
-import { events } from "@/data/events";
+import { Event } from "@/types/event";
 import { EventFilter } from "@/types/filter";
 import { filterEvents } from "@/utils/filterEvents";
 import Head from "next/head";
 import useLocalStorageState from "use-local-storage-state";
 
-export default function Home() {
+interface HomeProps {
+  events: Event[];
+}
+
+export default function Home({ events }: HomeProps) {
   const [activeFilter, setActiveFilter] = useLocalStorageState<EventFilter>(
     "activeFilter",
     {

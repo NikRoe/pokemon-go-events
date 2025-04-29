@@ -1,4 +1,4 @@
-export const events = [
+export const initialEvents = [
   {
     id: 1,
     name: "Heranwachsen",

@@ -1,6 +1,4 @@
-import { GetStaticPaths, GetStaticProps } from "next";
 import { useRouter } from "next/router";
-import { events } from "@/data/events";
 import { eventSpecials } from "@/data/eventSpecials";
 import { Event } from "@/types/event";
 import styled from "styled-components";
@@ -9,7 +7,7 @@ import PokemonGrid from "@/components/PokemonGrid";
 import Head from "next/head";
 
 interface EventDetailPageProps {
-  event: Event | null;
+  events: Event[];
 }
 
 const Container = styled.main`
@@ -55,15 +53,21 @@ const BackLink = styled(Link)`
   }
 `;
 
-export default function EventDetailPage({ event }: EventDetailPageProps) {
+export default function EventDetailPage({ events }: EventDetailPageProps) {
   const router = useRouter();
+
+  const { id } = router.query;
 
   if (router.isFallback) {
     return <div>Loading...</div>;
   }
 
+  const event = events.find(
+    (singleEvent: Event) => singleEvent.id === Number(id)
+  );
+
   if (!event) {
-    return <div>Event nicht gefunden</div>;
+    return <div>Event konnte nicht gefunden werden</div>;
   }
 
   return (
@@ -115,26 +119,3 @@ export default function EventDetailPage({ event }: EventDetailPageProps) {
     </>
   );
 }
-
-export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = events.map((event) => ({
-    params: { id: event.id.toString() },
-  }));
-
-  return { paths, fallback: true };
-};
-
-export const getStaticProps: GetStaticProps = async (context) => {
-  const id = context.params?.id;
-
-  if (!id || Array.isArray(id)) {
-    return { props: { event: null } };
-  }
-
-  const event = events.find((event) => event.id === parseInt(id, 10)) || null;
-
-  return {
-    props: { event },
-    revalidate: 60,
-  };
-};
