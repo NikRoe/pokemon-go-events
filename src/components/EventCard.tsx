@@ -69,11 +69,11 @@ export default function EventCard({ event }: EventCardProps) {
           {formatDate(event.end)} {formatTime(event.end)}
         </time>
       </TimeRange>
-      {event.preparation && (
-        <p>
-          <strong>Vorbereitung:</strong> {event.preparation}
-        </p>
-      )}
+
+      <p>
+        <strong>Vorbereitung:</strong> {event.preparation || "keine"}
+      </p>
+
       <TagList>
         {event.focus.map((focus) => (
           <Tag key={focus.pokemonName}>{focus.pokemonName}</Tag>
