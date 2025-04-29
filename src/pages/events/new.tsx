@@ -5,6 +5,7 @@ import { focusReasons } from "@/data/focusReasons";
 import { focusPokemon } from "@/data/focusPokemon";
 import { Event } from "@/types/event";
 import styled from "styled-components";
+import Remove from "@/assets/icons/remove.svg";
 
 const PageContainer = styled.div`
   max-width: 800px;
@@ -16,6 +17,11 @@ const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+`;
+
+const TimeContaier = styled.div`
+  display: flex;
+  justify-content: space-evenly;
 `;
 
 const FormGroup = styled.div`
@@ -34,6 +40,42 @@ const Input = styled.input`
   border-radius: 8px;
   background-color: ${({ theme }) => theme.colors.surface};
   color: ${({ theme }) => theme.colors.textPrimary};
+`;
+
+const SelectedList = styled.ul`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  padding: 0;
+  list-style: none;
+`;
+
+const SelectedItem = styled.li`
+  background-color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.textPrimary};
+  border-radius: 1rem;
+  padding: 0.25rem 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+`;
+
+const RemoveButton = styled.button`
+  color: ${({ theme }) => theme.colors.textPrimary};
+  cursor: pointer;
+  font-size: large;
+  padding: 0;
+  line-height: 1;
+  transition: color 0.2s ease;
+
+  svg {
+    fill: currentColor;
+  }
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.secondary};
+  }
 `;
 
 const Textarea = styled.textarea`
@@ -56,7 +98,6 @@ const SubmitButton = styled.button`
   padding: 0.75rem 1.5rem;
   background-color: ${({ theme }) => theme.colors.primary};
   color: ${({ theme }) => theme.colors.textPrimary};
-  border: none;
   border-radius: 8px;
   font-size: 1rem;
   font-weight: bold;
@@ -138,15 +179,17 @@ export default function NewEventPage({ onAddEvent }: NewEventPageProps) {
           <Input id="name" name="name" required />
         </FormGroup>
 
-        <FormGroup>
-          <Label htmlFor="start">Startzeit*</Label>
-          <Input id="start" name="start" type="datetime-local" required />
-        </FormGroup>
+        <TimeContaier>
+          <FormGroup>
+            <Label htmlFor="start">Startzeit*</Label>
+            <Input id="start" name="start" type="datetime-local" required />
+          </FormGroup>
 
-        <FormGroup>
-          <Label htmlFor="end">Endzeit*</Label>
-          <Input id="end" name="end" type="datetime-local" required />
-        </FormGroup>
+          <FormGroup>
+            <Label htmlFor="end">Endzeit*</Label>
+            <Input id="end" name="end" type="datetime-local" required />
+          </FormGroup>
+        </TimeContaier>
 
         <FormGroup>
           <Label htmlFor="preparation">Vorbereitung</Label>
@@ -158,16 +201,18 @@ export default function NewEventPage({ onAddEvent }: NewEventPageProps) {
           <Select
             id="specials"
             name="specials"
-            multiple
-            value={selectedSpecials.map(String)}
+            value={""}
             onChange={(event) => {
-              const selected = Array.from(event.target.selectedOptions).map(
-                (option) => Number(option.value)
+              const selected = Number(event.target.value);
+              setSelectedSpecials((prev) =>
+                prev.includes(selected) ? prev : [selected, ...prev]
               );
-              setSelectedSpecials(selected);
             }}
-            required
+            required={selectedSpecials.length === 0}
           >
+            <option value="">
+              ---Wähle eine oder mehrere Besonderheiten aus---
+            </option>
             {eventSpecials.map((special) => (
               <option key={special.id} value={special.id}>
                 {special.textContent}
@@ -175,6 +220,32 @@ export default function NewEventPage({ onAddEvent }: NewEventPageProps) {
             ))}
           </Select>
         </FormGroup>
+
+        <SelectedList>
+          {selectedSpecials.map((specialId) => {
+            const special = eventSpecials.find(
+              (special) => special.id === specialId
+            );
+            if (!special) return null;
+
+            return (
+              <SelectedItem key={specialId}>
+                {special.textContent}
+                <RemoveButton
+                  type="button"
+                  onClick={() =>
+                    setSelectedSpecials((prev) =>
+                      prev.filter((entry) => entry !== specialId)
+                    )
+                  }
+                  aria-label={`"${special.textContent}" entfernen`}
+                >
+                  <Remove width={20} height={20} />
+                </RemoveButton>
+              </SelectedItem>
+            );
+          })}
+        </SelectedList>
 
         <FormGroup>
           <Label htmlFor="focus">Fokus-Pokémon*</Label>
