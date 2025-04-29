@@ -42,16 +42,14 @@ const Input = styled.input`
   color: ${({ theme }) => theme.colors.textPrimary};
 `;
 
-const SelectedList = styled.ul`
+const List = styled.ul`
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
   margin-top: 0.5rem;
-  padding: 0;
-  list-style: none;
 `;
 
-const SelectedItem = styled.li`
+const ListItem = styled.li`
   background-color: ${({ theme }) => theme.colors.primary};
   color: ${({ theme }) => theme.colors.textPrimary};
   border-radius: 1rem;
@@ -118,18 +116,25 @@ export default function NewEventPage({ onAddEvent }: NewEventPageProps) {
 
   const [selectedSpecials, setSelectedSpecials] = useState<number[]>([]);
   const [selectedFocus, setSelectedFocus] = useState<
-    { pokemonId: number; reasonIds: number[] }[]
+    { pokemonId: number; reasons: number[] }[]
   >([]);
 
-  function handleFocusChange(pokemonId: number, reasonIds: number[]) {
+  function handleFocusChange(pokemonId: number, reasonId: number) {
     setSelectedFocus((prev) => {
       const existing = prev.find((focus) => focus.pokemonId === pokemonId);
       if (existing) {
         return prev.map((focus) =>
-          focus.pokemonId === pokemonId ? { ...focus, reasonIds } : focus
+          focus.pokemonId === pokemonId
+            ? {
+                ...focus,
+                reasons: focus.reasons.includes(reasonId)
+                  ? focus.reasons.filter((reason) => reason !== reasonId)
+                  : [...focus.reasons, reasonId],
+              }
+            : focus
         );
       } else {
-        return [...prev, { pokemonId, reasonIds }];
+        return [...prev, { pokemonId, reasons: [reasonId] }];
       }
     });
   }
@@ -153,7 +158,7 @@ export default function NewEventPage({ onAddEvent }: NewEventPageProps) {
       return {
         id: focus.pokemonId,
         pokemonName: name,
-        reasons: focus.reasonIds,
+        reasons: focus.reasons,
       };
     });
 
@@ -221,7 +226,7 @@ export default function NewEventPage({ onAddEvent }: NewEventPageProps) {
           </Select>
         </FormGroup>
 
-        <SelectedList>
+        <List>
           {selectedSpecials.map((specialId) => {
             const special = eventSpecials.find(
               (special) => special.id === specialId
@@ -229,7 +234,7 @@ export default function NewEventPage({ onAddEvent }: NewEventPageProps) {
             if (!special) return null;
 
             return (
-              <SelectedItem key={specialId}>
+              <ListItem key={specialId}>
                 {special.textContent}
                 <RemoveButton
                   type="button"
@@ -242,34 +247,68 @@ export default function NewEventPage({ onAddEvent }: NewEventPageProps) {
                 >
                   <Remove width={20} height={20} />
                 </RemoveButton>
-              </SelectedItem>
+              </ListItem>
             );
           })}
-        </SelectedList>
+        </List>
 
         <FormGroup>
           <Label htmlFor="focus">Fokus-Pokémon*</Label>
           {focusPokemon.map((pokemon) => (
-            <FormGroup key={pokemon.id} style={{ marginBottom: "1rem" }}>
-              <strong>{pokemon.pokemonName}</strong>
-              <Select
-                id="focus"
-                name="focus"
-                multiple
-                onChange={(event) => {
-                  const selected = Array.from(event.target.selectedOptions).map(
-                    (option) => Number(option.value)
-                  );
-                  handleFocusChange(pokemon.id, selected);
-                }}
-              >
-                {focusReasons.map((reason) => (
-                  <option key={reason.id} value={reason.id}>
-                    {reason.textContent}
+            <>
+              <FormGroup key={pokemon.id} style={{ marginBottom: "1rem" }}>
+                <strong>{pokemon.pokemonName}</strong>
+                <Select
+                  id="focus"
+                  name="focus"
+                  onChange={(event) => {
+                    const selected = Number(event.target.value);
+                    handleFocusChange(pokemon.id, selected);
+                  }}
+                >
+                  <option value="">
+                    ---Wähle einen oder mehrere Gründe aus---
                   </option>
-                ))}
-              </Select>
-            </FormGroup>
+                  {focusReasons.map((reason) => (
+                    <option key={reason.id} value={reason.id}>
+                      {reason.textContent}
+                    </option>
+                  ))}
+                </Select>
+              </FormGroup>
+
+              {selectedFocus
+                .filter((focusEntry) => focusEntry.pokemonId === pokemon.id)
+                .map((focusEntry) => {
+                  return (
+                    <List key={focusEntry.pokemonId}>
+                      {focusEntry.reasons.map((reasonId) => {
+                        const reason = focusReasons.find(
+                          (focusReason) => focusReason.id === reasonId
+                        );
+                        if (!reason) return null;
+                        return (
+                          <ListItem key={reasonId}>
+                            {reason.textContent}
+                            <RemoveButton
+                              type="button"
+                              onClick={() =>
+                                handleFocusChange(
+                                  focusEntry.pokemonId,
+                                  reasonId
+                                )
+                              }
+                              aria-label={`"${reason.textContent}" entfernen`}
+                            >
+                              <Remove width={20} height={20} />
+                            </RemoveButton>
+                          </ListItem>
+                        );
+                      })}
+                    </List>
+                  );
+                })}
+            </>
           ))}
         </FormGroup>
 
