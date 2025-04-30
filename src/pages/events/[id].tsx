@@ -1,14 +1,11 @@
 import { useRouter } from "next/router";
 import { eventSpecials } from "@/data/eventSpecials";
-import { Event } from "@/types/event";
 import styled from "styled-components";
 import Link from "next/link";
 import PokemonGrid from "@/components/PokemonGrid";
 import Head from "next/head";
-
-interface EventDetailPageProps {
-  events: Event[];
-}
+import { Event } from "@/types/event";
+import useSWR from "swr";
 
 const Container = styled.main`
   max-width: 800px;
@@ -53,20 +50,20 @@ const BackLink = styled(Link)`
   }
 `;
 
-export default function EventDetailPage({ events }: EventDetailPageProps) {
+export default function EventDetailPage() {
   const router = useRouter();
 
   const { id } = router.query;
 
-  if (router.isFallback) {
-    return <div>Loading...</div>;
-  }
+  const {
+    data: event,
+    error,
+    isLoading,
+  } = useSWR<Event>(id ? `/api/events/${id}` : null);
 
-  const event = events.find((singleEvent: Event) => singleEvent._id === id);
-
-  if (!event) {
-    return <div>Event konnte nicht gefunden werden</div>;
-  }
+  if (isLoading) return <p>Lade Event…</p>;
+  if (error) return <p>Fehler beim Laden</p>;
+  if (!event) return <p>Kein Event gefunden</p>;
 
   return (
     <>
