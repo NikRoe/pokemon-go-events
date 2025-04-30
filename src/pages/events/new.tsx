@@ -49,6 +49,12 @@ const Input = styled.input`
   color: ${({ theme }) => theme.colors.textPrimary};
 `;
 
+const DateTimeInput = styled(Input)`
+  &::-webkit-calendar-picker-indicator {
+    ${({ theme }) => theme.isDark && "filter: invert(1);"}
+  }
+`;
+
 const List = styled.ul`
   display: flex;
   flex-wrap: wrap;
@@ -290,12 +296,22 @@ export default function NewEventPage() {
           <TimeContainer>
             <FormGroup>
               <Label htmlFor="start">Startzeit*</Label>
-              <Input id="start" name="start" type="datetime-local" required />
+              <DateTimeInput
+                id="start"
+                name="start"
+                type="datetime-local"
+                required
+              />
             </FormGroup>
 
             <FormGroup>
               <Label htmlFor="end">Endzeit*</Label>
-              <Input id="end" name="end" type="datetime-local" required />
+              <DateTimeInput
+                id="end"
+                name="end"
+                type="datetime-local"
+                required
+              />
             </FormGroup>
           </TimeContainer>
 

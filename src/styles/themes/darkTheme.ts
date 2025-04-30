@@ -11,4 +11,5 @@ export const darkTheme: DefaultTheme = {
     shadow: "rgba(255, 255, 255, 0.5)",
     danger: "#f44336",
   },
+  isDark: true,
 };

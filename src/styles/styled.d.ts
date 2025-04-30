@@ -12,5 +12,6 @@ declare module "styled-components" {
       shadow: string;
       danger: string;
     };
+    isDark: boolean;
   }
 }
