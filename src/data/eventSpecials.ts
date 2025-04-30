@@ -17,4 +17,5 @@ export const eventSpecials = [
   },
   { id: 5, textContent: "Team Rocket erscheint häufiger" },
   { id: 6, textContent: "Debut eines neuen Pokemon" },
+  { id: 7, textContent: "Vermehrt Mega-Raids" },
 ];
