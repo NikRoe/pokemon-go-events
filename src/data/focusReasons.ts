@@ -23,4 +23,5 @@ export const focusReasons = [
     id: 6,
     textContent: "Platin-Medaille",
   },
+  { id: 7, textContent: "Regionales Pokemon" },
 ];
