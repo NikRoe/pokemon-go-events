@@ -32,6 +32,6 @@ export default async function handler(
     }
   }
 
-  response.setHeader("Allow", ["POST"]);
+  response.setHeader("Allow", ["POST", "GET"]);
   return response.status(405).end(`Methode ${request.method} nicht erlaubt`);
 }
