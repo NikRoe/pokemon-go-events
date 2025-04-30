@@ -21,9 +21,14 @@ const FormContainer = styled.form`
   gap: 1rem;
 `;
 
-const TimeContaier = styled.div`
+const TimeContainer = styled.div`
   display: flex;
-  justify-content: space-evenly;
+  flex-direction: column;
+
+  @media (min-width: 600px) {
+    flex-direction: row;
+    justify-content: space-evenly;
+  }
 `;
 
 const FormGroup = styled.div`
@@ -250,7 +255,7 @@ export default function NewEventPage() {
       const createdEvent = await res.json();
       console.log("Event gespeichert:", createdEvent);
 
-      router.push("/"); // oder z. B. '/events'
+      router.push("/");
     } catch (err) {
       console.error(err);
       alert("Beim Speichern ist ein Fehler aufgetreten.");
@@ -282,7 +287,7 @@ export default function NewEventPage() {
             <Input id="name" name="name" required />
           </FormGroup>
 
-          <TimeContaier>
+          <TimeContainer>
             <FormGroup>
               <Label htmlFor="start">Startzeit*</Label>
               <Input id="start" name="start" type="datetime-local" required />
@@ -292,7 +297,7 @@ export default function NewEventPage() {
               <Label htmlFor="end">Endzeit*</Label>
               <Input id="end" name="end" type="datetime-local" required />
             </FormGroup>
-          </TimeContaier>
+          </TimeContainer>
 
           <FormGroup>
             <Label htmlFor="preparation">Vorbereitung</Label>
