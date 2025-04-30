@@ -33,17 +33,16 @@ export default function Home() {
       <Head>
         <title>Pokemon Go Events</title>
       </Head>
-      <main>
-        <FilterBar
-          activeFilter={activeFilter}
-          onFilterClick={handleFilterClick}
-        />
-        {events && events.length > 0 ? (
-          <EventsGrid events={filteredEvents} />
-        ) : (
-          <p>Keine Events vorhanden.</p>
-        )}
-      </main>
+
+      <FilterBar
+        activeFilter={activeFilter}
+        onFilterClick={handleFilterClick}
+      />
+      {events && events.length > 0 ? (
+        <EventsGrid events={filteredEvents} />
+      ) : (
+        <p>Keine Events vorhanden.</p>
+      )}
     </>
   );
 }

@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
 import { eventSpecials } from "@/data/eventSpecials";
 import styled from "styled-components";
-import Link from "next/link";
 import PokemonGrid from "@/components/PokemonGrid";
 import Head from "next/head";
 import { Event } from "@/types/event";
@@ -9,7 +8,7 @@ import useSWR from "swr";
 import { useRef } from "react";
 import Delete from "@/assets/icons/delete.svg";
 
-const Container = styled.main`
+const Container = styled.div`
   max-width: 800px;
   margin: 2rem auto;
   padding: 1.5rem;
@@ -38,18 +37,6 @@ const SubTitle = styled.h2`
 
 const TimeInfo = styled.time`
   color: ${({ theme }) => theme.colors.textSecondary};
-`;
-
-const BackLink = styled(Link)`
-  color: ${({ theme }) => theme.colors.primary};
-  font-weight: bold;
-  text-decoration: none;
-  margin-top: 2rem;
-  display: inline-block;
-
-  &:hover {
-    text-decoration: underline;
-  }
 `;
 
 const DeleteButton = styled.button`
@@ -215,8 +202,6 @@ export default function EventDetailPage() {
             <button type="submit">Abbrechen</button>
           </DialogActions>
         </StyledDialog>
-
-        <BackLink href="/">← Zurück zur Übersicht</BackLink>
       </Container>
     </>
   );
