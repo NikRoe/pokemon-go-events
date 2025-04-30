@@ -24,7 +24,7 @@ const FilterButton = styled.button<{ $isActive: boolean }>`
   padding: 0.5rem 1rem;
   border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color 0.5s ease, color 0.5s ease;
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.primary};

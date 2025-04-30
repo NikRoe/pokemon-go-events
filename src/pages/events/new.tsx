@@ -73,7 +73,7 @@ const RemoveButton = styled.button`
   font-size: large;
   padding: 0;
   line-height: 1;
-  transition: color 0.2s ease;
+  transition: color 0.5s ease;
 
   svg {
     fill: currentColor;
@@ -108,7 +108,7 @@ const SubmitButton = styled.button`
   font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.5s ease;
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.secondary};
