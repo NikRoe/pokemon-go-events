@@ -8,5 +8,6 @@ export const lightTheme: DefaultTheme = {
     secondary: "#018786",
     textPrimary: "#121212",
     textSecondary: "#555555",
+    shadow: "rgba(0, 0, 0, 0.5)",
   },
 };

@@ -8,5 +8,6 @@ export const darkTheme: DefaultTheme = {
     secondary: "#03dac6",
     textPrimary: "#ffffff",
     textSecondary: "#b0b0b0",
+    shadow: "rgba(255, 255, 255, 0.5)",
   },
 };

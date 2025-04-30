@@ -11,7 +11,7 @@ const Card = styled.article`
   color: ${({ theme }) => theme.colors.textPrimary};
   padding: 1.5rem;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 8px ${({ theme }) => theme.colors.shadow};
   transition: background-color 0.3s ease, color 0.3s ease;
   display: flex;
   flex-direction: column;

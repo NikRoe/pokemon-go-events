@@ -138,7 +138,7 @@ const FocusCard = styled.div`
 
   margin-left: auto;
   margin-right: auto;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 6px ${({ theme }) => theme.colors.shadow};
 `;
 
 const FocusCardHeader = styled.div`

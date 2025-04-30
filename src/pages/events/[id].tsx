@@ -20,7 +20,7 @@ const Section = styled.section`
   background-color: ${({ theme }) => theme.colors.surface};
   padding: 1.5rem;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px ${({ theme }) => theme.colors.shadow};
   transition: background-color 0.5s ease;
 `;
 
