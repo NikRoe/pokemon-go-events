@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
+import { Schema, Document, models, model } from "mongoose";
 
-export interface Events extends mongoose.Document {
+export interface EventDocument extends Document {
   name: string;
   start: string;
   end: string;
@@ -13,14 +13,22 @@ export interface Events extends mongoose.Document {
   }[];
 }
 
-const EventSchema = new mongoose.Schema<Events>({
+const FocusSchema = new Schema(
+  {
+    id: { type: Number, required: true },
+    pokemonName: { type: String, required: true },
+    reasons: [{ type: Number, required: true }],
+  },
+  { _id: false }
+);
+
+const EventSchema = new Schema<EventDocument>({
   name: { type: String, required: true },
   start: { type: String, required: true },
   end: { type: String, required: true },
-  preparation: { type: Boolean },
+  preparation: { type: String, default: null },
   specials: [{ type: Number, required: true }],
-  focus: [{ type: Object, required: true }],
+  focus: [FocusSchema],
 });
 
-export default mongoose.models.Event ||
-  mongoose.model<Events>("Event", EventSchema);
+export default models.Event || model<EventDocument>("Event", EventSchema);
