@@ -9,5 +9,6 @@ export const darkTheme: DefaultTheme = {
     textPrimary: "#ffffff",
     textSecondary: "#b0b0b0",
     shadow: "rgba(255, 255, 255, 0.5)",
+    danger: "#f44336",
   },
 };

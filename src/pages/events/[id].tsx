@@ -7,6 +7,7 @@ import Head from "next/head";
 import { Event } from "@/types/event";
 import useSWR from "swr";
 import { useRef } from "react";
+import Delete from "@/assets/icons/delete.svg";
 
 const Container = styled.main`
   max-width: 800px;
@@ -54,7 +55,6 @@ const BackLink = styled(Link)`
 const DeleteButton = styled.button`
   background: none;
   border: none;
-  color: ${({ theme }) => theme.colors.textSecondary};
   cursor: pointer;
   font-weight: bold;
   font-size: 0.9rem;
@@ -62,9 +62,13 @@ const DeleteButton = styled.button`
   border-radius: 6px;
   transition: background-color 0.2s ease;
 
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.secondary};
-    color: ${({ theme }) => theme.colors.textPrimary};
+  svg {
+    fill: ${({ theme }) => theme.colors.textPrimary};
+    transition: fill 0.2s ease;
+  }
+
+  &:hover svg {
+    fill: ${({ theme }) => theme.colors.danger};
   }
 `;
 
@@ -163,8 +167,12 @@ export default function EventDetailPage() {
       <Container>
         <TitleRow>
           <Title>{event.name}</Title>
-          <DeleteButton onClick={() => dialogRef.current?.showModal()}>
-            Event löschen
+          <DeleteButton
+            onClick={() => dialogRef.current?.showModal()}
+            type="button"
+            aria-label="Event löschen"
+          >
+            <Delete width={25} height={25} />
           </DeleteButton>
         </TitleRow>
         <TimeInfo>
