@@ -7,17 +7,13 @@ import { initialEvents } from "@/data/events";
 import type { Event } from "@/types/event";
 
 export default function App({ Component, pageProps }: AppProps) {
-  const [events, setEvents] = useState<Event[]>(initialEvents);
-
-  function handleAddEvent(newEvent: Event) {
-    setEvents((prev) => [...prev, newEvent]);
-  }
+  const [events] = useState<Event[]>(initialEvents);
 
   return (
     <CustomThemeProvider>
       <GlobalStyles />
       <Header />
-      <Component {...pageProps} events={events} onAddEvent={handleAddEvent} />
+      <Component {...pageProps} events={events} />
     </CustomThemeProvider>
   );
 }

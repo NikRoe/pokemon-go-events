@@ -168,11 +168,7 @@ const ReasonItem = styled(ListItem)`
   align-items: center;
 `;
 
-interface NewEventPageProps {
-  onAddEvent: (newEvent: Event) => void;
-}
-
-export default function NewEventPage({ onAddEvent }: NewEventPageProps) {
+export default function NewEventPage() {
   const router = useRouter();
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -209,7 +205,7 @@ export default function NewEventPage({ onAddEvent }: NewEventPageProps) {
     });
   }
 
-  function handleSubmit(event: React.FormEvent) {
+  async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
 
     const form = event.target as HTMLFormElement;
@@ -232,17 +228,32 @@ export default function NewEventPage({ onAddEvent }: NewEventPageProps) {
       };
     });
 
-    const newEvent: Event = {
-      id: Date.now(),
+    const newEvent: Omit<Event, "id"> = {
       ...data,
       preparation: data.preparation || null,
       specials: selectedSpecials,
       focus,
     };
 
-    onAddEvent(newEvent);
+    try {
+      const res = await fetch("/api/events", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newEvent),
+      });
 
-    router.push("/");
+      if (!res.ok) {
+        throw new Error("Fehler beim Speichern des Events");
+      }
+
+      const createdEvent = await res.json();
+      console.log("Event gespeichert:", createdEvent);
+
+      router.push("/"); // oder z. B. '/events'
+    } catch (err) {
+      console.error(err);
+      alert("Beim Speichern ist ein Fehler aufgetreten.");
+    }
   }
 
   const filteredPokemon = pokemonList
