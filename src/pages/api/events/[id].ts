@@ -27,6 +27,20 @@ export default async function handler(
     }
   }
 
-  response.setHeader("Allow", ["GET"]);
+  if (request.method === "DELETE") {
+    try {
+      const deleted = await Event.findByIdAndDelete(id);
+      if (!deleted)
+        return response.status(404).json({ error: "Event nicht gefunden" });
+      return response.status(204).end(); // erfolgreich, kein Content zurückgeben
+    } catch (error) {
+      console.error("[DELETE /api/events/:id]", error);
+      return response
+        .status(500)
+        .json({ error: "Fehler beim Löschen des Events" });
+    }
+  }
+
+  response.setHeader("Allow", ["GET", "DELETE"]);
   return response.status(405).end(`Methode ${request.method} nicht erlaubt`);
 }
