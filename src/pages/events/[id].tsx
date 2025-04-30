@@ -62,9 +62,7 @@ export default function EventDetailPage({ events }: EventDetailPageProps) {
     return <div>Loading...</div>;
   }
 
-  const event = events.find(
-    (singleEvent: Event) => singleEvent.id === Number(id)
-  );
+  const event = events.find((singleEvent: Event) => singleEvent._id === id);
 
   if (!event) {
     return <div>Event konnte nicht gefunden werden</div>;

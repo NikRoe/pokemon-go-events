@@ -51,7 +51,7 @@ function EventsGrid({ events }: EventsGridProps) {
       <AnimatePresence>
         {events.map((event) => (
           <MotionCard
-            key={event.id}
+            key={event._id}
             variants={cardVariants}
             initial="hidden"
             animate="visible"

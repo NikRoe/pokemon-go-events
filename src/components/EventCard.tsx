@@ -57,7 +57,7 @@ function formatTime(isoString: string): string {
 export default function EventCard({ event }: EventCardProps) {
   return (
     <Card>
-      <Link href={`/events/${event.id}`}>
+      <Link href={`/events/${event._id}`}>
         <h2>{event.name}</h2>
       </Link>
       <TimeRange>

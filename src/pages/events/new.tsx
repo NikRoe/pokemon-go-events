@@ -228,7 +228,7 @@ export default function NewEventPage() {
       };
     });
 
-    const newEvent: Omit<Event, "id"> = {
+    const newEvent: Omit<Event, "_id"> = {
       ...data,
       preparation: data.preparation || null,
       specials: selectedSpecials,

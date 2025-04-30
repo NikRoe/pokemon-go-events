@@ -2,21 +2,27 @@ import EventsGrid from "@/components/EventsGrid";
 import FilterBar from "@/components/FilterBar";
 import { Event } from "@/types/event";
 import { EventFilter } from "@/types/filter";
+import { fetcher } from "@/utils/fetcher";
 import { filterEvents } from "@/utils/filterEvents";
 import Head from "next/head";
+import useSWR from "swr";
 import useLocalStorageState from "use-local-storage-state";
 
-interface HomeProps {
-  events: Event[];
-}
-
-export default function Home({ events }: HomeProps) {
+export default function Home() {
+  const {
+    data: events,
+    error,
+    isLoading,
+  } = useSWR<Event[]>("/api/events", fetcher);
   const [activeFilter, setActiveFilter] = useLocalStorageState<EventFilter>(
     "activeFilter",
     {
       defaultValue: "active",
     }
   );
+
+  if (isLoading) return <p>Lade Events…</p>;
+  if (error || !events) return <p>Fehler beim Laden der Events</p>;
 
   const filteredEvents = filterEvents(events, activeFilter);
 
@@ -37,7 +43,11 @@ export default function Home({ events }: HomeProps) {
           activeFilter={activeFilter}
           onFilterClick={handleFilterClick}
         />
-        <EventsGrid events={filteredEvents} />
+        {events && events.length > 0 ? (
+          <EventsGrid events={filteredEvents} />
+        ) : (
+          <p>Keine Events vorhanden.</p>
+        )}
       </main>
     </>
   );
