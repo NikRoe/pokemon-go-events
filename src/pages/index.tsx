@@ -2,18 +2,13 @@ import EventsGrid from "@/components/EventsGrid";
 import FilterBar from "@/components/FilterBar";
 import { Event } from "@/types/event";
 import { EventFilter } from "@/types/filter";
-import { fetcher } from "@/utils/fetcher";
 import { filterEvents } from "@/utils/filterEvents";
 import Head from "next/head";
 import useSWR from "swr";
 import useLocalStorageState from "use-local-storage-state";
 
 export default function Home() {
-  const {
-    data: events,
-    error,
-    isLoading,
-  } = useSWR<Event[]>("/api/events", fetcher);
+  const { data: events, error, isLoading } = useSWR<Event[]>("/api/events");
   const [activeFilter, setActiveFilter] = useLocalStorageState<EventFilter>(
     "activeFilter",
     {
