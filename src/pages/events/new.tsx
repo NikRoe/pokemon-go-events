@@ -301,6 +301,7 @@ export default function NewEventPage() {
                 name="start"
                 type="datetime-local"
                 required
+                step={300}
               />
             </FormGroup>
 
@@ -311,6 +312,7 @@ export default function NewEventPage() {
                 name="end"
                 type="datetime-local"
                 required
+                step={300}
               />
             </FormGroup>
           </TimeContainer>
