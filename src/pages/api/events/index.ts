@@ -20,6 +20,18 @@ export default async function handler(
     }
   }
 
+  if (request.method === "GET") {
+    try {
+      const events = await Event.find().sort({ start: 1 });
+      return response.status(200).json(events);
+    } catch (error) {
+      console.error("[GET /api/events] Fehler:", error);
+      return response
+        .status(500)
+        .json({ error: "Fehler beim Laden der Events" });
+    }
+  }
+
   response.setHeader("Allow", ["POST"]);
   return response.status(405).end(`Methode ${request.method} nicht erlaubt`);
 }
