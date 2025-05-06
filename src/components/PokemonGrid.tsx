@@ -46,7 +46,7 @@ const ReasonsList = styled.ul`
 const PokemonInfoContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-between;
   height: 100%;
 `;
 
@@ -54,6 +54,7 @@ const Heading = styled.h3`
   border-bottom: 2px solid ${({ theme }) => theme.colors.shadow};
   text-align: center;
   margin-bottom: 0.25rem;
+  padding: 0.25rem;
 `;
 
 export default function PokemonGrid({ event }: PokemonGridProps) {

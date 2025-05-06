@@ -12,7 +12,12 @@ import Head from "next/head";
 const PageContainer = styled.div`
   max-width: 800px;
   margin: 2rem auto;
-  padding: 2rem;
+
+  padding: 1rem;
+
+  @media (min-width: 600px) {
+    padding: 2rem;
+  }
 `;
 
 const FormContainer = styled.form`
@@ -132,7 +137,7 @@ const FocusCardContainer = styled.div`
   grid-template-columns: 1fr;
   gap: 1.5rem;
 
-  @media (min-width: 700px) {
+  @media (min-width: 600px) {
     grid-template-columns: repeat(2, minmax(200px, 1fr));
   }
 `;
@@ -145,11 +150,8 @@ const FocusCard = styled.div`
   margin: 1rem 0;
   display: flex;
   flex-direction: column;
+  width: 80%;
   gap: 1rem;
-  width: 100%;
-
-  margin-left: auto;
-  margin-right: auto;
   box-shadow: 0 2px 6px ${({ theme }) => theme.colors.shadow};
 `;
 
