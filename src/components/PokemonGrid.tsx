@@ -29,7 +29,7 @@ const FocusCard = styled.div`
   transition: background-color 0.5s ease;
 `;
 
-const PokemonImageWrapper = styled.figure`
+const PokemonImageWrapper = styled.div`
   flex-shrink: 0;
   width: 128px;
   height: 128px;
@@ -43,6 +43,19 @@ const ReasonsList = styled.ul`
   font-size: 0.9rem;
 `;
 
+const PokemonInfoContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 100%;
+`;
+
+const Heading = styled.h3`
+  border-bottom: 2px solid ${({ theme }) => theme.colors.shadow};
+  text-align: center;
+  margin-bottom: 0.25rem;
+`;
+
 export default function PokemonGrid({ event }: PokemonGridProps) {
   return (
     <FocusGrid>
@@ -54,11 +67,9 @@ export default function PokemonGrid({ event }: PokemonGridProps) {
               alt={pokemon.pokemonName}
               fill={true}
             />
-            <figcaption style={{ textAlign: "center" }}>
-              <h3>{pokemon.pokemonName}</h3>
-            </figcaption>
           </PokemonImageWrapper>
-          <div>
+          <PokemonInfoContainer>
+            <Heading>{pokemon.pokemonName}</Heading>
             <ReasonsList>
               {pokemon.reasons.map((reasonId) => {
                 const reason = focusReasons.find((r) => r.id === reasonId);
@@ -67,7 +78,7 @@ export default function PokemonGrid({ event }: PokemonGridProps) {
                 ) : null;
               })}
             </ReasonsList>
-          </div>
+          </PokemonInfoContainer>
         </FocusCard>
       ))}
     </FocusGrid>
