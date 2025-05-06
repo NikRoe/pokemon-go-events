@@ -24,4 +24,9 @@ export const focusReasons = [
     textContent: "Platin-Medaille",
   },
   { id: 7, textContent: "Regionales Pokemon" },
+  {
+    id: 8,
+    textContent: "Erlernt besondere Attacke bei Entwicklung während Event",
+  },
+  { id: 9, textContent: "Kann höhere Werte haben" },
 ];
