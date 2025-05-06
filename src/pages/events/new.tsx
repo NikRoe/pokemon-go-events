@@ -258,8 +258,7 @@ export default function NewEventPage() {
         throw new Error("Fehler beim Speichern des Events");
       }
 
-      const createdEvent = await res.json();
-      console.log("Event gespeichert:", createdEvent);
+      await res.json();
 
       router.push("/");
     } catch (err) {
@@ -319,7 +318,7 @@ export default function NewEventPage() {
 
           <FormGroup>
             <Label htmlFor="preparation">Vorbereitung</Label>
-            <Textarea id="preparation" />
+            <Textarea id="preparation" name="preparation" />
           </FormGroup>
 
           <FormGroup>
