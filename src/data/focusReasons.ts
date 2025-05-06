@@ -29,4 +29,5 @@ export const focusReasons = [
     textContent: "Erlernt besondere Attacke bei Entwicklung während Event",
   },
   { id: 9, textContent: "Kann höhere Werte haben" },
+  { id: 10, textContent: "Gibt Debut" },
 ];
