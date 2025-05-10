@@ -11,6 +11,7 @@ import Edit from "@/assets/icons/edit.svg";
 import Link from "next/link";
 import { formatDateTimeWithWeekday } from "@/utils/formatDateTimeWithWeekday";
 import { priorityLevels } from "@/data/priorityLevels";
+import Image from "next/image";
 
 const Container = styled.div`
   max-width: 800px;
@@ -67,6 +68,8 @@ const ActionItem = styled.li`
 const MegaRecommendation = styled.div`
   font-size: 0.95rem;
   color: ${({ theme }) => theme.colors.textSecondary};
+  display: flex;
+  justify-content: space-around;
 `;
 
 const Section = styled.section`
@@ -96,7 +99,7 @@ const ButtonContainer = styled.div`
   align-items: center;
 `;
 
-const Button = styled.button<{ size?: string }>`
+const Button = styled.button<{ size?: string; isDelete?: boolean }>`
   background: none;
   border: none;
   cursor: pointer;
@@ -106,10 +109,12 @@ const Button = styled.button<{ size?: string }>`
   height: ${({ size }) => size || "auto"};
   padding: 0.25rem 0.5rem;
   border-radius: 6px;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.5s ease;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  fill: ${({ theme, isDelete }) => isDelete && theme.colors.textPrimary};
+  transition: fill 0.3s ease;
 
   svg {
     width: 100%;
@@ -117,12 +122,19 @@ const Button = styled.button<{ size?: string }>`
 
     max-width: 100%;
     max-height: 100%;
-    fill: ${({ theme }) => theme.colors.textPrimary};
-    transition: fill 0.2s ease;
   }
 
   &:hover svg {
-    fill: ${({ theme }) => theme.colors.danger};
+    fill: ${({ theme, isDelete }) => isDelete && theme.colors.danger};
+  }
+
+  svg path {
+    stroke: ${({ theme, isDelete }) => !isDelete && theme.colors.textPrimary};
+    transition: stroke 0.3s ease;
+  }
+
+  &:hover svg path {
+    stroke: ${({ theme, isDelete }) => !isDelete && theme.colors.danger};
   }
 `;
 
@@ -175,6 +187,20 @@ const DialogActions = styled.form`
   }
 `;
 
+const PokemonImageWrapper = styled.div`
+  flex-shrink: 0;
+  width: 128px;
+  height: 128px;
+  position: relative;
+`;
+
+const Heading = styled.h3`
+  border-bottom: 2px solid ${({ theme }) => theme.colors.shadow};
+  text-align: center;
+  margin-bottom: 0.25rem;
+  padding: 0.25rem;
+`;
+
 export default function EventDetailPage() {
   const router = useRouter();
 
@@ -220,48 +246,69 @@ export default function EventDetailPage() {
       </Head>
       <Container>
         <EventOverview>
-          <PriorityBadge priority={1}>{priorityLevels[1]}</PriorityBadge>
+          <TitleRow>
+            <Title>{event.name}</Title>
+            <ButtonContainer>
+              <Button
+                as={Link}
+                href={`/events/${id}/edit`}
+                aria-label="Event bearbeiten"
+                size="64px"
+              >
+                <Edit />
+              </Button>
+              <Button
+                onClick={() => dialogRef.current?.showModal()}
+                type="button"
+                aria-label="Event löschen"
+                size="48px"
+                isDelete
+              >
+                <Delete />
+              </Button>
+            </ButtonContainer>
+          </TitleRow>
+          <TimeInfo>
+            {formatDateTimeWithWeekday(event.start)} -{" "}
+            {formatDateTimeWithWeekday(event.end)}
+          </TimeInfo>
+
+          <PriorityBadge priority={event.priority || 1}>
+            Priorität: {priorityLevels[event.priority || 1]} ({event.priority} /
+            5)
+          </PriorityBadge>
+
+          <Section>
+            <SubTitle>Vorbereitung</SubTitle>
+            <p>{event.preparation || "Keine"}</p>
+          </Section>
+
+          <h3>Erste Schritte, wenn das Event startet:</h3>
+
           <ActionList>
-            <ActionItem>Pokébälle vorbereiten</ActionItem>
-            <ActionItem>Boxplatz schaffen</ActionItem>
-            <ActionItem>Glücks-Ei aktivieren</ActionItem>
+            {event.steps?.map((step) => (
+              <ActionItem key={step}>{step}</ActionItem>
+            ))}
           </ActionList>
+          <strong>Empfohlene Mega-Entwicklung(en):</strong>
           <MegaRecommendation>
-            <strong>Empfohlene Mega-Entwicklung:</strong> Mega-Glurak Y,
-            Mega-Schlapor
+            {event.recommendedMegas?.map((megaPokemon) => {
+              return (
+                <span key={megaPokemon.id}>
+                  {" "}
+                  <PokemonImageWrapper>
+                    <Image
+                      src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${megaPokemon.id}.png`}
+                      alt={megaPokemon.pokemonName}
+                      fill={true}
+                    />
+                  </PokemonImageWrapper>
+                  <Heading>{megaPokemon.pokemonName}</Heading>
+                </span>
+              );
+            })}
           </MegaRecommendation>
         </EventOverview>
-
-        <TitleRow>
-          <Title>{event.name}</Title>
-          <ButtonContainer>
-            <Button
-              as={Link}
-              href={`/events/${id}/edit`}
-              aria-label="Event bearbeiten"
-              size="64px"
-            >
-              <Edit />
-            </Button>
-            <Button
-              onClick={() => dialogRef.current?.showModal()}
-              type="button"
-              aria-label="Event löschen"
-              size="48px"
-            >
-              <Delete />
-            </Button>
-          </ButtonContainer>
-        </TitleRow>
-        <TimeInfo>
-          {formatDateTimeWithWeekday(event.start)} -{" "}
-          {formatDateTimeWithWeekday(event.end)}
-        </TimeInfo>
-
-        <Section>
-          <SubTitle>Vorbereitung</SubTitle>
-          <p>{event.preparation || "Keine"}</p>
-        </Section>
 
         {event.specials.length > 0 && (
           <Section>

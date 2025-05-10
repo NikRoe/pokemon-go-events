@@ -6,7 +6,6 @@ import { focusReasons } from "@/data/focusReasons";
 import { pokemonList } from "@/data/pokemonList";
 import { useState } from "react";
 import { Event, EventPriority, FrontendEvent } from "@/types/event";
-import { priorityLevels } from "@/data/priorityLevels";
 import FirstStepsInput from "./FirstStepsInput";
 import Priority from "./EventPriority";
 
@@ -187,9 +186,25 @@ export default function Form({
   const [selectedFocus, setSelectedFocus] = useState<
     { id: number; reasons: number[] }[]
   >(defaultValue?.focus || []);
-  const [recommendedMegas, setRecommendedMegas] = useState<number[]>([]);
-  const [firstSteps, setFirstSteps] = useState<string[]>([]);
-  const [priority, setPriority] = useState<EventPriority>(1);
+  const [recommendedMegas, setRecommendedMegas] = useState<
+    { id: number; pokemonName: string }[]
+  >(defaultValue?.recommendedMegas || []);
+  const [firstSteps, setFirstSteps] = useState<string[]>(
+    defaultValue?.steps || []
+  );
+  const [priority, setPriority] = useState<EventPriority>(
+    defaultValue?.priority || 1
+  );
+
+  function updateMegaObject(id: number) {
+    const name =
+      pokemonList.find((pokemon) => pokemon.id === id)?.pokemonName ??
+      "Unbekannt";
+    return {
+      id,
+      pokemonName: name,
+    };
+  }
 
   function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -215,31 +230,17 @@ export default function Form({
       };
     });
 
-    const megas = recommendedMegas.map((focus) => {
-      const name =
-        pokemonList.find((pokemon) => pokemon.id === focus)?.pokemonName ??
-        "Unbekannt";
-      return {
-        id: focus,
-        pokemonName: name,
-      };
-    });
-
     const newEvent: FrontendEvent = {
       ...data,
       preparation: data.preparation || null,
       specials: selectedSpecials,
       focus,
       steps: firstSteps,
-      recommendedMegas: megas,
+      recommendedMegas,
     };
 
-    console.log("newEvent: ", newEvent);
-    // onSubmit(newEvent);
+    onSubmit(newEvent);
   }
-
-  console.log("Megas:", recommendedMegas);
-  console.log("megasearchterm:", megaSearchTerm);
 
   function handlePriorityChange(event: React.ChangeEvent) {
     const inputElement = event.target as HTMLInputElement;
@@ -294,7 +295,7 @@ export default function Form({
         pokemon.id.toString() === megaSearchTerm
     )
     .filter(
-      (pokemon) => !recommendedMegas.some((focus) => focus === pokemon.id)
+      (pokemon) => !recommendedMegas.some((focus) => focus.id === pokemon.id)
     );
 
   return (
@@ -366,7 +367,8 @@ export default function Form({
             <ListItem
               key={pokemon.id}
               onClick={() => {
-                setRecommendedMegas((prev) => [...prev, pokemon.id]);
+                const updatedMega = updateMegaObject(pokemon.id);
+                setRecommendedMegas((prev) => [...prev, updatedMega]);
               }}
               $isClickable
               $searchResult
@@ -389,7 +391,7 @@ export default function Form({
 
       <FocusCardContainer>
         {recommendedMegas.map((focusEntry) => {
-          const singlePokemon = pokemonList.find((p) => p.id === focusEntry);
+          const singlePokemon = pokemonList.find((p) => p.id === focusEntry.id);
 
           if (!singlePokemon) return null;
 
@@ -410,7 +412,7 @@ export default function Form({
                   onClick={() =>
                     setRecommendedMegas(
                       recommendedMegas.filter(
-                        (focus) => focus !== singlePokemon.id
+                        (focus) => focus.id !== singlePokemon.id
                       )
                     )
                   }

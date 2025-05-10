@@ -1,3 +1,4 @@
+import { EventPriority } from "@/types/event";
 import { Schema, Document, models, model } from "mongoose";
 
 export interface EventDocument extends Document {
@@ -11,6 +12,9 @@ export interface EventDocument extends Document {
     pokemonName: string;
     reasons: number[];
   }[];
+  priority: EventPriority;
+  steps: string[];
+  recommendedMegas: { id: number; pokemonName: string }[];
 }
 
 const FocusSchema = new Schema(
@@ -22,6 +26,14 @@ const FocusSchema = new Schema(
   { _id: false }
 );
 
+const RecommendedMegasSchema = new Schema(
+  {
+    id: { type: Number, required: true },
+    pokemonName: { type: String, required: true },
+  },
+  { _id: false }
+);
+
 const EventSchema = new Schema<EventDocument>({
   name: { type: String, required: true },
   start: { type: String, required: true },
@@ -29,6 +41,9 @@ const EventSchema = new Schema<EventDocument>({
   preparation: { type: String, default: null },
   specials: [{ type: Number, required: true }],
   focus: [FocusSchema],
+  priority: { type: Number, required: true },
+  steps: [{ type: String, required: true }],
+  recommendedMegas: [RecommendedMegasSchema],
 });
 
 export default models.Event || model<EventDocument>("Event", EventSchema);
