@@ -37,4 +37,5 @@ export const eventSpecials = [
     id: 19,
     textContent: "Einige Pokemon erhalten besondere Attacke bei Entwicklung",
   },
+  { id: 20, textContent: "3-Fache Menge Sternenstaub beim Fangen" },
 ];
