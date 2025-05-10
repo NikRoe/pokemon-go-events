@@ -180,13 +180,14 @@ export default function Form({
   defaultValue?: Event;
 }) {
   const [searchTerm, setSearchTerm] = useState("");
+  const [megaSearchTerm, setMegaSearchTerm] = useState("");
   const [selectedSpecials, setSelectedSpecials] = useState<number[]>(
     defaultValue?.specials || []
   );
   const [selectedFocus, setSelectedFocus] = useState<
     { id: number; reasons: number[] }[]
   >(defaultValue?.focus || []);
-  const [recommendedMegas, setRecommendedMegas] = useState<string[]>([]);
+  const [recommendedMegas, setRecommendedMegas] = useState<number[]>([]);
   const [firstSteps, setFirstSteps] = useState<string[]>([]);
   const [priority, setPriority] = useState<EventPriority>(1);
 
@@ -214,17 +215,31 @@ export default function Form({
       };
     });
 
+    const megas = recommendedMegas.map((focus) => {
+      const name =
+        pokemonList.find((pokemon) => pokemon.id === focus)?.pokemonName ??
+        "Unbekannt";
+      return {
+        id: focus,
+        pokemonName: name,
+      };
+    });
+
     const newEvent: FrontendEvent = {
       ...data,
       preparation: data.preparation || null,
       specials: selectedSpecials,
       focus,
       steps: firstSteps,
+      recommendedMegas: megas,
     };
 
     console.log("newEvent: ", newEvent);
     // onSubmit(newEvent);
   }
+
+  console.log("Megas:", recommendedMegas);
+  console.log("megasearchterm:", megaSearchTerm);
 
   function handlePriorityChange(event: React.ChangeEvent) {
     const inputElement = event.target as HTMLInputElement;
@@ -268,6 +283,18 @@ export default function Form({
     )
     .filter(
       (pokemon) => !selectedFocus.some((focus) => focus.id === pokemon.id)
+    );
+
+  const filteredMegaPokemon = pokemonList
+    .filter(
+      (pokemon) =>
+        pokemon.pokemonName
+          .toLowerCase()
+          .includes(megaSearchTerm.toLowerCase()) ||
+        pokemon.id.toString() === megaSearchTerm
+    )
+    .filter(
+      (pokemon) => !recommendedMegas.some((focus) => focus === pokemon.id)
     );
 
   return (
@@ -321,16 +348,81 @@ export default function Form({
 
       <FirstStepsInput firstSteps={firstSteps} setFirstSteps={setFirstSteps} />
 
-      <label>
-        Empfohlene Mega-Entwicklungen:
-        <input
+      <h3>Empfohlene Mega-Entwicklungen:</h3>
+
+      <FormGroup>
+        <Label htmlFor="search">Pokémon suchen</Label>
+        <Input
+          id="search"
           type="text"
-          value={recommendedMegas.join(", ")}
-          onChange={(e) =>
-            setRecommendedMegas(e.target.value.split(",").map((s) => s.trim()))
-          }
+          value={megaSearchTerm}
+          onChange={(event) => setMegaSearchTerm(event.target.value)}
+          placeholder="Name oder ID eingeben..."
         />
-      </label>
+      </FormGroup>
+      {megaSearchTerm && (
+        <List>
+          {filteredMegaPokemon.slice(0, 10).map((pokemon) => (
+            <ListItem
+              key={pokemon.id}
+              onClick={() => {
+                setRecommendedMegas((prev) => [...prev, pokemon.id]);
+              }}
+              $isClickable
+              $searchResult
+            >
+              <PokemonImageWrapper>
+                <Image
+                  src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`}
+                  alt={pokemon.pokemonName}
+                  fill={true}
+                />
+              </PokemonImageWrapper>
+
+              <h3>
+                {pokemon.pokemonName} <br /> (ID: {pokemon.id})
+              </h3>
+            </ListItem>
+          ))}
+        </List>
+      )}
+
+      <FocusCardContainer>
+        {recommendedMegas.map((focusEntry) => {
+          const singlePokemon = pokemonList.find((p) => p.id === focusEntry);
+
+          if (!singlePokemon) return null;
+
+          return (
+            <FocusCard key={singlePokemon.id}>
+              <FocusCardHeader>
+                <PokemonImageWrapper>
+                  <Image
+                    src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${singlePokemon.id}.png`}
+                    alt={singlePokemon.pokemonName}
+                    fill={true}
+                  />
+                </PokemonImageWrapper>
+
+                <strong>{singlePokemon?.pokemonName}</strong>
+                <RemoveButton
+                  type="button"
+                  onClick={() =>
+                    setRecommendedMegas(
+                      recommendedMegas.filter(
+                        (focus) => focus !== singlePokemon.id
+                      )
+                    )
+                  }
+                  aria-label={`"${singlePokemon.pokemonName}" entfernen`}
+                >
+                  <Remove width={20} height={20} />
+                </RemoveButton>
+              </FocusCardHeader>
+            </FocusCard>
+          );
+        })}
+      </FocusCardContainer>
 
       <FormGroup>
         <Label htmlFor="specials">Besonderheiten*</Label>

@@ -13,7 +13,7 @@ export interface FrontendEvent {
   }[];
   priority: EventPriority;
   steps: string[];
-  recommendedMegas: string[];
+  recommendedMegas: { id: number; pokemonName: string }[];
 }
 
 export interface Event extends FrontendEvent {
