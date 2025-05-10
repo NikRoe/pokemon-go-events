@@ -1,3 +1,5 @@
+export type EventPriority = 1 | 2 | 3 | 4 | 5;
+
 export interface FrontendEvent {
   name: string;
   start: string;
@@ -9,6 +11,9 @@ export interface FrontendEvent {
     pokemonName: string;
     reasons: number[];
   }[];
+  priority: EventPriority;
+  steps: string[];
+  recommendedMegas: string[];
 }
 
 export interface Event extends FrontendEvent {

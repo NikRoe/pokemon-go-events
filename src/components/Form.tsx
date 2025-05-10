@@ -5,7 +5,10 @@ import { eventSpecials } from "@/data/eventSpecials";
 import { focusReasons } from "@/data/focusReasons";
 import { pokemonList } from "@/data/pokemonList";
 import { useState } from "react";
-import { Event, FrontendEvent } from "@/types/event";
+import { Event, EventPriority, FrontendEvent } from "@/types/event";
+import { priorityLevels } from "@/data/priorityLevels";
+import FirstStepsInput from "./FirstStepsInput";
+import Priority from "./EventPriority";
 
 const FormContainer = styled.form`
   display: flex;
@@ -183,6 +186,9 @@ export default function Form({
   const [selectedFocus, setSelectedFocus] = useState<
     { id: number; reasons: number[] }[]
   >(defaultValue?.focus || []);
+  const [recommendedMegas, setRecommendedMegas] = useState<string[]>([]);
+  const [firstSteps, setFirstSteps] = useState<string[]>([]);
+  const [priority, setPriority] = useState<EventPriority>(1);
 
   function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -191,9 +197,10 @@ export default function Form({
 
     const formData = new FormData(form);
 
+    // @ts-ignore
     const data = Object.fromEntries(formData) as Pick<
       Event,
-      "name" | "start" | "end" | "preparation"
+      "name" | "start" | "end" | "preparation" | "priority" | "recommendedMegas"
     >;
 
     const focus = selectedFocus.map((focus) => {
@@ -212,9 +219,18 @@ export default function Form({
       preparation: data.preparation || null,
       specials: selectedSpecials,
       focus,
+      steps: firstSteps,
     };
 
-    onSubmit(newEvent);
+    console.log("newEvent: ", newEvent);
+    // onSubmit(newEvent);
+  }
+
+  function handlePriorityChange(event: React.ChangeEvent) {
+    const inputElement = event.target as HTMLInputElement;
+    const newPriority = Number(inputElement.value) as EventPriority;
+
+    setPriority(newPriority);
   }
 
   function handleFocusChange(id: number, reasonId: number) {
@@ -292,6 +308,8 @@ export default function Form({
         </FormGroup>
       </TimeContainer>
 
+      <Priority priority={priority} onPriorityChange={handlePriorityChange} />
+
       <FormGroup>
         <Label htmlFor="preparation">Vorbereitung</Label>
         <Textarea
@@ -300,6 +318,19 @@ export default function Form({
           defaultValue={defaultValue?.preparation ?? ""}
         />
       </FormGroup>
+
+      <FirstStepsInput firstSteps={firstSteps} setFirstSteps={setFirstSteps} />
+
+      <label>
+        Empfohlene Mega-Entwicklungen:
+        <input
+          type="text"
+          value={recommendedMegas.join(", ")}
+          onChange={(e) =>
+            setRecommendedMegas(e.target.value.split(",").map((s) => s.trim()))
+          }
+        />
+      </label>
 
       <FormGroup>
         <Label htmlFor="specials">Besonderheiten*</Label>
