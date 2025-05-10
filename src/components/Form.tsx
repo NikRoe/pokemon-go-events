@@ -171,14 +171,18 @@ const ReasonItem = styled(ListItem)`
 
 export default function Form({
   onSubmit,
+  defaultValue,
 }: {
   onSubmit: (newEvent: FrontendEvent) => void;
+  defaultValue?: Event;
 }) {
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedSpecials, setSelectedSpecials] = useState<number[]>([]);
+  const [selectedSpecials, setSelectedSpecials] = useState<number[]>(
+    defaultValue?.specials || []
+  );
   const [selectedFocus, setSelectedFocus] = useState<
-    { pokemonId: number; reasons: number[] }[]
-  >([]);
+    { id: number; reasons: number[] }[]
+  >(defaultValue?.focus || []);
 
   function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -194,10 +198,10 @@ export default function Form({
 
     const focus = selectedFocus.map((focus) => {
       const name =
-        pokemonList.find((pokemon) => pokemon.id === focus.pokemonId)
-          ?.pokemonName ?? "Unbekannt";
+        pokemonList.find((pokemon) => pokemon.id === focus.id)?.pokemonName ??
+        "Unbekannt";
       return {
-        id: focus.pokemonId,
+        id: focus.id,
         pokemonName: name,
         reasons: focus.reasons,
       };
@@ -213,9 +217,9 @@ export default function Form({
     onSubmit(newEvent);
   }
 
-  function handleFocusChange(pokemonId: number, reasonId: number) {
+  function handleFocusChange(id: number, reasonId: number) {
     setSelectedFocus((prev) => {
-      const index = prev.findIndex((focus) => focus.pokemonId === pokemonId);
+      const index = prev.findIndex((focus) => focus.id === id);
 
       if (index !== -1) {
         const focus = prev[index];
@@ -235,7 +239,7 @@ export default function Form({
           ...prev.slice(index + 1),
         ];
       } else {
-        return [...prev, { pokemonId, reasons: [reasonId] }];
+        return [...prev, { id, reasons: [reasonId] }];
       }
     });
   }
@@ -247,15 +251,19 @@ export default function Form({
         pokemon.id.toString() === searchTerm
     )
     .filter(
-      (pokemon) =>
-        !selectedFocus.some((focus) => focus.pokemonId === pokemon.id)
+      (pokemon) => !selectedFocus.some((focus) => focus.id === pokemon.id)
     );
 
   return (
     <FormContainer onSubmit={handleSubmit}>
       <FormGroup>
         <Label htmlFor="name">Event-Name*</Label>
-        <Input id="name" name="name" required />
+        <Input
+          id="name"
+          name="name"
+          required
+          defaultValue={defaultValue?.name}
+        />
       </FormGroup>
 
       <TimeContainer>
@@ -265,6 +273,7 @@ export default function Form({
             id="start"
             name="start"
             type="datetime-local"
+            defaultValue={defaultValue?.start}
             required
             step={300}
           />
@@ -276,6 +285,7 @@ export default function Form({
             id="end"
             name="end"
             type="datetime-local"
+            defaultValue={defaultValue?.end}
             required
             step={300}
           />
@@ -284,7 +294,11 @@ export default function Form({
 
       <FormGroup>
         <Label htmlFor="preparation">Vorbereitung</Label>
-        <Textarea id="preparation" name="preparation" />
+        <Textarea
+          id="preparation"
+          name="preparation"
+          defaultValue={defaultValue?.preparation ?? ""}
+        />
       </FormGroup>
 
       <FormGroup>
@@ -361,7 +375,7 @@ export default function Form({
                 onClick={() => {
                   setSelectedFocus((prev) => [
                     ...prev,
-                    { pokemonId: pokemon.id, reasons: [] },
+                    { id: pokemon.id, reasons: [] },
                   ]);
                 }}
                 $isClickable
@@ -385,7 +399,7 @@ export default function Form({
         <FocusCardContainer>
           {selectedFocus.map((focusEntry) => {
             const singlePokemon = pokemonList.find(
-              (p) => p.id === focusEntry.pokemonId
+              (p) => p.id === focusEntry.id
             );
 
             if (!singlePokemon) return null;
@@ -407,7 +421,7 @@ export default function Form({
                     onClick={() =>
                       setSelectedFocus(
                         selectedFocus.filter(
-                          (focus) => focus.pokemonId !== singlePokemon.id
+                          (focus) => focus.id !== singlePokemon.id
                         )
                       )
                     }

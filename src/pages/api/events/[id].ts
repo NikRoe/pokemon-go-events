@@ -41,6 +41,24 @@ export default async function handler(
     }
   }
 
-  response.setHeader("Allow", ["GET", "DELETE"]);
+  if (request.method === "PUT") {
+    const updatedEvent = request.body;
+    try {
+      const event = await Event.findByIdAndUpdate(id, updatedEvent);
+      if (!event) {
+        return response
+          .status(404)
+          .json({ error: "Event konnte nicht aktualisiert werden" });
+      }
+      return response.status(200).json(event);
+    } catch (error) {
+      console.error("[PUT /api/events/:id] Fehler:", error);
+      return response
+        .status(500)
+        .json({ error: "Fehler beim Laden des Events" });
+    }
+  }
+
+  response.setHeader("Allow", ["GET", "DELETE", "PUT"]);
   return response.status(405).end(`Methode ${request.method} nicht erlaubt`);
 }

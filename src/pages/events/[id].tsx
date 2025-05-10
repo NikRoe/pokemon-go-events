@@ -7,6 +7,8 @@ import { Event } from "@/types/event";
 import useSWR from "swr";
 import { useRef } from "react";
 import Delete from "@/assets/icons/delete.svg";
+import Edit from "@/assets/icons/edit.svg";
+import Link from "next/link";
 
 const Container = styled.div`
   max-width: 800px;
@@ -39,17 +41,32 @@ const TimeInfo = styled.time`
   color: ${({ theme }) => theme.colors.textSecondary};
 `;
 
-const DeleteButton = styled.button`
+const ButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const Button = styled.button<{ size?: string }>`
   background: none;
   border: none;
   cursor: pointer;
   font-weight: bold;
   font-size: 0.9rem;
+  width: ${({ size }) => size || "auto"};
+  height: ${({ size }) => size || "auto"};
   padding: 0.25rem 0.5rem;
   border-radius: 6px;
   transition: background-color 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 
   svg {
+    width: 100%;
+    height: 100%;
+
+    max-width: 100%;
+    max-height: 100%;
     fill: ${({ theme }) => theme.colors.textPrimary};
     transition: fill 0.2s ease;
   }
@@ -154,13 +171,24 @@ export default function EventDetailPage() {
       <Container>
         <TitleRow>
           <Title>{event.name}</Title>
-          <DeleteButton
-            onClick={() => dialogRef.current?.showModal()}
-            type="button"
-            aria-label="Event löschen"
-          >
-            <Delete width={25} height={25} />
-          </DeleteButton>
+          <ButtonContainer>
+            <Button
+              as={Link}
+              href={`/events/${id}/edit`}
+              aria-label="Event bearbeiten"
+              size="64px"
+            >
+              <Edit />
+            </Button>
+            <Button
+              onClick={() => dialogRef.current?.showModal()}
+              type="button"
+              aria-label="Event löschen"
+              size="48px"
+            >
+              <Delete />
+            </Button>
+          </ButtonContainer>
         </TitleRow>
         <TimeInfo>
           {new Date(event.start).toLocaleString("de-DE")} –{" "}
