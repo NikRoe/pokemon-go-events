@@ -10,6 +10,7 @@ import Delete from "@/assets/icons/delete.svg";
 import Edit from "@/assets/icons/edit.svg";
 import Link from "next/link";
 import { formatDateTimeWithWeekday } from "@/utils/formatDateTimeWithWeekday";
+import { priorityLevels } from "@/data/priorityLevels";
 
 const Container = styled.div`
   max-width: 800px;
@@ -38,15 +39,15 @@ const PriorityBadge = styled.div<{ priority: number }>`
   background-color: ${({ priority }) => {
     switch (priority) {
       case 1:
-        return "#a0aec0"; // grau – unwichtig
+        return "#a0aec0";
       case 2:
-        return "#63b3ed"; // blau
+        return "#63b3ed";
       case 3:
-        return "#f6ad55"; // orange
+        return "#f6ad55";
       case 4:
-        return "#ed8936"; // dunkler orange
+        return "#ed8936";
       case 5:
-        return "#e53e3e"; // rot – äußerst wichtig
+        return "#e53e3e";
       default:
         return "#e2e8f0";
     }
@@ -219,11 +220,11 @@ export default function EventDetailPage() {
       </Head>
       <Container>
         <EventOverview>
-          <PriorityBadge priority={4}>Sehr wichtig</PriorityBadge>
+          <PriorityBadge priority={1}>{priorityLevels[1]}</PriorityBadge>
           <ActionList>
-            <ActionItem>1. Pokébälle vorbereiten</ActionItem>
-            <ActionItem>2. Boxplatz schaffen</ActionItem>
-            <ActionItem>3. Glücks-Ei aktivieren</ActionItem>
+            <ActionItem>Pokébälle vorbereiten</ActionItem>
+            <ActionItem>Boxplatz schaffen</ActionItem>
+            <ActionItem>Glücks-Ei aktivieren</ActionItem>
           </ActionList>
           <MegaRecommendation>
             <strong>Empfohlene Mega-Entwicklung:</strong> Mega-Glurak Y,
