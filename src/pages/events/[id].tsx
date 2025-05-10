@@ -9,6 +9,7 @@ import { useRef } from "react";
 import Delete from "@/assets/icons/delete.svg";
 import Edit from "@/assets/icons/edit.svg";
 import Link from "next/link";
+import { formatDateTimeWithWeekday } from "@/utils/formatDateTimeWithWeekday";
 
 const Container = styled.div`
   max-width: 800px;
@@ -191,8 +192,8 @@ export default function EventDetailPage() {
           </ButtonContainer>
         </TitleRow>
         <TimeInfo>
-          {new Date(event.start).toLocaleString("de-DE")} –{" "}
-          {new Date(event.end).toLocaleString("de-DE")}
+          {formatDateTimeWithWeekday(event.start)} -{" "}
+          {formatDateTimeWithWeekday(event.end)}
         </TimeInfo>
 
         <Section>
