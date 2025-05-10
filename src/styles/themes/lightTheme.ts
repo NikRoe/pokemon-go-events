@@ -10,6 +10,7 @@ export const lightTheme: DefaultTheme = {
     textSecondary: "#555555",
     shadow: "rgba(0, 0, 0, 0.5)",
     danger: "#d32f2f",
+    backgroundElevated: "#ffffff",
   },
   isDark: false,
 };

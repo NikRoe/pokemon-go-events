@@ -11,6 +11,7 @@ declare module "styled-components" {
       textSecondary: string;
       shadow: string;
       danger: string;
+      backgroundElevated: string;
     };
     isDark: boolean;
   }

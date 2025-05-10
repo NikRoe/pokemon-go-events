@@ -20,6 +20,54 @@ const Container = styled.div`
   gap: 2rem;
 `;
 
+const EventOverview = styled.section`
+  background: ${({ theme }) => theme.colors.backgroundElevated};
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: grid;
+  gap: 1rem;
+`;
+
+const PriorityBadge = styled.div<{ priority: number }>`
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  font-weight: bold;
+  text-align: center;
+  color: white;
+  background-color: ${({ priority }) => {
+    switch (priority) {
+      case 1:
+        return "#a0aec0"; // grau – unwichtig
+      case 2:
+        return "#63b3ed"; // blau
+      case 3:
+        return "#f6ad55"; // orange
+      case 4:
+        return "#ed8936"; // dunkler orange
+      case 5:
+        return "#e53e3e"; // rot – äußerst wichtig
+      default:
+        return "#e2e8f0";
+    }
+  }};
+`;
+
+const ActionList = styled.ol`
+  list-style: decimal inside;
+  margin: 0;
+  padding: 0;
+`;
+
+const ActionItem = styled.li`
+  padding-left: 0.5rem;
+`;
+
+const MegaRecommendation = styled.div`
+  font-size: 0.95rem;
+  color: ${({ theme }) => theme.colors.textSecondary};
+`;
+
 const Section = styled.section`
   background-color: ${({ theme }) => theme.colors.surface};
   padding: 1.5rem;
@@ -170,6 +218,19 @@ export default function EventDetailPage() {
         />
       </Head>
       <Container>
+        <EventOverview>
+          <PriorityBadge priority={4}>Sehr wichtig</PriorityBadge>
+          <ActionList>
+            <ActionItem>1. Pokébälle vorbereiten</ActionItem>
+            <ActionItem>2. Boxplatz schaffen</ActionItem>
+            <ActionItem>3. Glücks-Ei aktivieren</ActionItem>
+          </ActionList>
+          <MegaRecommendation>
+            <strong>Empfohlene Mega-Entwicklung:</strong> Mega-Glurak Y,
+            Mega-Schlapor
+          </MegaRecommendation>
+        </EventOverview>
+
         <TitleRow>
           <Title>{event.name}</Title>
           <ButtonContainer>
