@@ -31,4 +31,5 @@ export const focusReasons = [
   { id: 9, textContent: "Kann höhere Werte haben" },
   { id: 10, textContent: "Gibt Debut" },
   { id: 11, textContent: "Mehr Sternenstaub" },
+  { id: 12, textContent: "Crypto Debut" },
 ];

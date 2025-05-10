@@ -27,4 +27,14 @@ export const eventSpecials = [
   { id: 14, textContent: "Erhöhte Menge kostenlose Raid-Pässe" },
   { id: 15, textContent: "Zeitlich begrenzte Feldforschung" },
   { id: 16, textContent: "Verkürzte Brutzeit" },
+  { id: 17, textContent: "Doppelte Erfahrung bei Raid-Kämpfen" },
+  {
+    id: 18,
+    textContent:
+      "Zusätzlicher Raid-Pass pro Tag nach Abschluss befristeter Forschung",
+  },
+  {
+    id: 19,
+    textContent: "Einige Pokemon erhalten besondere Attacke bei Entwicklung",
+  },
 ];
