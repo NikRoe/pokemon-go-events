@@ -213,8 +213,19 @@ export default function Form({
 
     const formData = new FormData(form);
 
-    // @ts-ignore
-    const data = Object.fromEntries(formData) as Pick<
+    const data = {
+      name: formData.get("name")?.toString() ?? "",
+      start: formData.get("start")?.toString() ?? "",
+      end: formData.get("end")?.toString() ?? "",
+      preparation: formData.get("preparation")?.toString() ?? "",
+      priority: (Number(formData.get("priority")) as EventPriority) || 3,
+      recommendedMegas: formData.getAll("recommendedMegas").map((v) => {
+        return JSON.parse(v.toString()) as {
+          id: number;
+          pokemonName: string;
+        };
+      }),
+    } satisfies Pick<
       Event,
       "name" | "start" | "end" | "preparation" | "priority" | "recommendedMegas"
     >;
