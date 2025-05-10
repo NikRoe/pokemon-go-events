@@ -26,5 +26,5 @@ export const eventSpecials = [
   { id: 13, textContent: "Crypto-Raids gehen mit Fern-Raid-Pass" },
   { id: 14, textContent: "Erhöhte Menge kostenlose Raid-Pässe" },
   { id: 15, textContent: "Zeitlich begrenzte Feldforschung" },
-  { id: 16, textContent: "Verkürzte Brützeit" },
+  { id: 16, textContent: "Verkürzte Brutzeit" },
 ];
