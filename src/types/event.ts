@@ -1,5 +1,4 @@
-export interface Event {
-  _id: string;
+export interface FrontendEvent {
   name: string;
   start: string;
   end: string;
@@ -10,6 +9,10 @@ export interface Event {
     pokemonName: string;
     reasons: number[];
   }[];
+}
+
+export interface Event extends FrontendEvent {
+  _id: string;
 }
 
 export interface Special {
