@@ -83,6 +83,8 @@ const Section = styled.section`
 const Title = styled.h1`
   font-size: 2rem;
   margin-bottom: 0.5rem;
+
+  word-break: break-word;
 `;
 
 const SubTitle = styled.h2`
@@ -96,7 +98,12 @@ const TimeInfo = styled.time`
 
 const ButtonContainer = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
+
+  @media (min-width: 600px) {
+    flex-direction: row;
+  }
 `;
 
 const Button = styled.button<{ size?: string; isDelete?: boolean }>`
