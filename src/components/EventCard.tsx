@@ -6,7 +6,7 @@ interface EventCardProps {
   event: Event;
 }
 
-const Card = styled.article`
+const Card = styled(Link)`
   background-color: ${({ theme }) => theme.colors.surface};
   color: ${({ theme }) => theme.colors.textPrimary};
   padding: 1.5rem;
@@ -56,10 +56,9 @@ function formatTime(isoString: string): string {
 
 export default function EventCard({ event }: EventCardProps) {
   return (
-    <Card>
-      <Link href={`/events/${event._id}`}>
-        <h2>{event.name}</h2>
-      </Link>
+    <Card href={`/events/${event._id}`}>
+      <h2>{event.name}</h2>
+
       <TimeRange>
         <time dateTime={event.start}>
           {formatDate(event.start)} {formatTime(event.start)}
