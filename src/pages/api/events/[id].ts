@@ -30,9 +30,10 @@ export default async function handler(
   if (request.method === "DELETE") {
     try {
       const deleted = await Event.findByIdAndDelete(id);
-      if (!deleted)
+      if (!deleted) {
         return response.status(404).json({ error: "Event nicht gefunden" });
-      return response.status(204).end(); // erfolgreich, kein Content zurückgeben
+      }
+      return response.status(204).end();
     } catch (error) {
       console.error("[DELETE /api/events/:id]", error);
       return response
