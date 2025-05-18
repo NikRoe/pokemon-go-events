@@ -1,4 +1,3 @@
-// src/pages/_document.tsx
 import Document, {
   DocumentContext,
   DocumentInitialProps,

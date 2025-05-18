@@ -107,7 +107,7 @@ const ButtonContainer = styled.div`
   }
 `;
 
-const Button = styled.button<{ size?: string; isDelete?: boolean }>`
+const Button = styled.button<{ size?: string; $isDelete?: boolean }>`
   background: none;
   border: none;
   cursor: pointer;
@@ -121,7 +121,7 @@ const Button = styled.button<{ size?: string; isDelete?: boolean }>`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  fill: ${({ theme, isDelete }) => isDelete && theme.colors.textPrimary};
+  fill: ${({ theme, $isDelete }) => $isDelete && theme.colors.textPrimary};
   transition: fill 0.3s ease;
 
   svg {
@@ -133,16 +133,16 @@ const Button = styled.button<{ size?: string; isDelete?: boolean }>`
   }
 
   &:hover svg {
-    fill: ${({ theme, isDelete }) => isDelete && theme.colors.danger};
+    fill: ${({ theme, $isDelete }) => $isDelete && theme.colors.danger};
   }
 
   svg path {
-    stroke: ${({ theme, isDelete }) => !isDelete && theme.colors.textPrimary};
+    stroke: ${({ theme, $isDelete }) => !$isDelete && theme.colors.textPrimary};
     transition: stroke 0.3s ease;
   }
 
   &:hover svg path {
-    stroke: ${({ theme, isDelete }) => !isDelete && theme.colors.danger};
+    stroke: ${({ theme, $isDelete }) => !$isDelete && theme.colors.danger};
   }
 `;
 
@@ -270,7 +270,7 @@ export default function EventDetailPage() {
                 type="button"
                 aria-label="Event löschen"
                 size="48px"
-                isDelete
+                $isDelete
               >
                 <Delete />
               </Button>

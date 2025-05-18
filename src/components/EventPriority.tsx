@@ -12,12 +12,12 @@ const FormGroup = styled.label`
   margin-bottom: 1rem;
 `;
 
-const Select = styled.select<{ priority: EventPriority }>`
+const Select = styled.select<{ $priority: EventPriority }>`
   appearance: none;
   padding: 0.5rem 0.75rem;
   border: 1px solid ${({ theme }) => theme.colors.textSecondary};
   border-radius: 8px;
-  background-color: ${({ priority }) => priorityConfig[priority].color};
+  background-color: ${({ $priority }) => priorityConfig[$priority].color};
   color: ${({ theme }) => theme.colors.textPrimary};
   font-weight: bold;
   cursor: pointer;
@@ -48,7 +48,7 @@ export default function Priority({
         name="priority"
         id="priority"
         required
-        priority={priority}
+        $priority={priority}
         value={priority}
         onChange={onPriorityChange}
       >
