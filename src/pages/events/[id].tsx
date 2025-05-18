@@ -70,6 +70,7 @@ const MegaRecommendation = styled.div`
   color: ${({ theme }) => theme.colors.textSecondary};
   display: flex;
   justify-content: space-around;
+  flex-wrap: wrap;
 `;
 
 const Section = styled.section`
