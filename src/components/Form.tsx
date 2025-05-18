@@ -1,7 +1,5 @@
-import Image from "next/image";
 import Remove from "@/assets/icons/remove.svg";
 import { eventSpecials } from "@/data/eventSpecials";
-import { focusReasons } from "@/data/focusReasons";
 import { pokemonList } from "@/data/pokemonList";
 import { useState } from "react";
 import { Event, EventPriority, FrontendEvent } from "@/types/event";
@@ -20,13 +18,6 @@ import {
   Textarea,
   TimeContainer,
   Select,
-  FocusCardContainer,
-  FocusCard,
-  FocusCardHeader,
-  PokemonImageWrapper,
-  FocusSelect,
-  ReasonsList,
-  ReasonItem,
 } from "./Form.styled";
 import Search from "./Search";
 
@@ -223,6 +214,7 @@ export default function Form({
             recommendedMegas.filter((focus) => focus.id !== id)
           )
         }
+        focusMode={false}
       />
 
       <FormGroup>
@@ -278,134 +270,23 @@ export default function Form({
         })}
       </List>
 
-      <FormGroup>
-        <Label htmlFor="focus">Fokus-Pokémon*</Label>
-
-        <FormGroup>
-          <Label htmlFor="search">Pokémon suchen</Label>
-          <Input
-            id="search"
-            type="text"
-            value={searchTerm}
-            onChange={(event) => setSearchTerm(event.target.value)}
-            placeholder="Name oder ID eingeben..."
-          />
-        </FormGroup>
-        {searchTerm && (
-          <List>
-            {filteredPokemon.slice(0, 10).map((pokemon) => (
-              <ListItem
-                key={pokemon.id}
-                onClick={() => {
-                  setSelectedFocus((prev) => [
-                    ...prev,
-                    { id: pokemon.id, reasons: [] },
-                  ]);
-                }}
-                $isClickable
-                $searchResult
-              >
-                <PokemonImageWrapper>
-                  <Image
-                    src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`}
-                    alt={pokemon.pokemonName}
-                    fill={true}
-                  />
-                </PokemonImageWrapper>
-
-                <h3>
-                  {pokemon.pokemonName} <br /> (ID: {pokemon.id})
-                </h3>
-              </ListItem>
-            ))}
-          </List>
-        )}
-        <FocusCardContainer>
-          {selectedFocus.map((focusEntry) => {
-            const singlePokemon = pokemonList.find(
-              (p) => p.id === focusEntry.id
-            );
-
-            if (!singlePokemon) return null;
-
-            return (
-              <FocusCard key={singlePokemon.id}>
-                <FocusCardHeader>
-                  <PokemonImageWrapper>
-                    <Image
-                      src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${singlePokemon.id}.png`}
-                      alt={singlePokemon.pokemonName}
-                      fill={true}
-                    />
-                  </PokemonImageWrapper>
-
-                  <strong>{singlePokemon?.pokemonName}</strong>
-                  <RemoveButton
-                    type="button"
-                    onClick={() =>
-                      setSelectedFocus(
-                        selectedFocus.filter(
-                          (focus) => focus.id !== singlePokemon.id
-                        )
-                      )
-                    }
-                    aria-label={`"${singlePokemon.pokemonName}" entfernen`}
-                  >
-                    <Remove width={20} height={20} />
-                  </RemoveButton>
-                </FocusCardHeader>
-
-                <FocusSelect
-                  onChange={(event) => {
-                    const selected = Number(event.target.value);
-                    if (selected) {
-                      handleFocusChange(singlePokemon.id, selected);
-                    }
-                  }}
-                  value=""
-                >
-                  <option value="">--- Wähle Gründe aus ---</option>
-                  {focusReasons
-                    .filter(
-                      (reason) => !focusEntry?.reasons.includes(reason.id)
-                    )
-                    .map((reason) => (
-                      <option key={reason.id} value={reason.id}>
-                        {reason.textContent}
-                      </option>
-                    ))}
-                </FocusSelect>
-
-                {focusEntry && focusEntry.reasons.length > 0 && (
-                  <ReasonsList>
-                    {focusEntry.reasons.map((reasonId) => {
-                      const reason = focusReasons.find(
-                        (focusReason) => focusReason.id === reasonId
-                      );
-                      if (!reason) return null;
-
-                      return (
-                        <ReasonItem key={reasonId}>
-                          {reason.textContent}
-                          <RemoveButton
-                            type="button"
-                            onClick={() =>
-                              handleFocusChange(singlePokemon.id, reasonId)
-                            }
-                            aria-label={`"${reason.textContent}" entfernen`}
-                          >
-                            <Remove width={20} height={20} />
-                          </RemoveButton>
-                        </ReasonItem>
-                      );
-                    })}
-                  </ReasonsList>
-                )}
-              </FocusCard>
-            );
-          })}
-        </FocusCardContainer>
-      </FormGroup>
+      <Search
+        title="Fokus-Pokémon*"
+        searchTerm={searchTerm}
+        handleChange={(event: string) => setSearchTerm(event)}
+        searchSuggestions={filteredPokemon}
+        handlePokemonClick={(pokemon) =>
+          setSelectedFocus((prev) => [...prev, { id: pokemon.id, reasons: [] }])
+        }
+        searchResults={selectedFocus}
+        handleRemovePokemon={(id) =>
+          setSelectedFocus(selectedFocus.filter((focus) => focus.id !== id))
+        }
+        focusMode={true}
+        handleFocusChange={(pokemonId, reasonId) =>
+          handleFocusChange(pokemonId, reasonId)
+        }
+      />
 
       <SubmitButton type="submit">Event speichern</SubmitButton>
     </FormContainer>

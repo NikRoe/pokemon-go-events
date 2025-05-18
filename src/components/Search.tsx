@@ -1,7 +1,19 @@
 import SearchBar from "./SearchBar";
 import SearchResults from "./SearchResults";
 
-interface SearchProps {
+type SearchProps =
+  | ({
+      focusMode: true;
+      searchResults: { id: number; reasons: number[] }[];
+      handleFocusChange: (id: number, selected: number) => void;
+    } & CommonSearchProps)
+  | ({
+      focusMode: false;
+      searchResults: { pokemonName: string; id: number }[];
+      handleFocusChange?: never;
+    } & CommonSearchProps);
+
+type CommonSearchProps = {
   title: string;
   searchTerm: string;
   handleChange: (event: string) => void;
@@ -15,35 +27,43 @@ interface SearchProps {
     id: number;
     pokemonName: string;
   }) => void;
-  searchResults: {
-    pokemonName: string;
-    id: number;
-  }[];
   handleRemovePokemon: (id: number) => void;
-}
+};
 
 export default function Search({
+  title,
   searchTerm,
   handleChange,
   searchSuggestions,
   handlePokemonClick,
   searchResults,
   handleRemovePokemon,
+  focusMode,
+  handleFocusChange,
 }: SearchProps) {
   return (
     <>
       <SearchBar
-        title="Empfohlene Mega-Entwicklungen"
+        title={title}
         searchTerm={searchTerm}
         onChange={handleChange}
         results={searchSuggestions}
         onPokemonClick={handlePokemonClick}
       />
-
-      <SearchResults
-        results={searchResults}
-        onRemovePokemon={handleRemovePokemon}
-      />
+      {focusMode ? (
+        <SearchResults
+          results={searchResults as { id: number; reasons: number[] }[]}
+          onRemovePokemon={handleRemovePokemon}
+          focusMode={true}
+          onFocusChange={handleFocusChange!}
+        />
+      ) : (
+        <SearchResults
+          results={searchResults as { pokemonName: string; id: number }[]}
+          onRemovePokemon={handleRemovePokemon}
+          focusMode={false}
+        />
+      )}
     </>
   );
 }
