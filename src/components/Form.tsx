@@ -140,10 +140,12 @@ export default function Form({
   const filteredMegaPokemon = pokemonList
     .filter(
       (pokemon) =>
-        pokemon.pokemonName
+        (pokemon.pokemonName
           .toLowerCase()
-          .includes(megaSearchTerm.toLowerCase()) ||
-        pokemon.id.toString() === megaSearchTerm
+          .includes(megaSearchTerm.toLowerCase()) &&
+          pokemon.pokemonName.toLowerCase().includes("-mega")) ||
+        (pokemon.id.toString() === megaSearchTerm &&
+          pokemon.pokemonName.toLowerCase().includes("-mega"))
     )
     .filter(
       (pokemon) => !recommendedMegas.some((focus) => focus.id === pokemon.id)
