@@ -299,23 +299,27 @@ export default function EventDetailPage() {
             ))}
           </ActionList>
           <strong>Empfohlene Mega-Entwicklung(en):</strong>
-          <MegaRecommendation>
-            {event.recommendedMegas?.map((megaPokemon) => {
-              return (
-                <span key={megaPokemon.id}>
-                  {" "}
-                  <PokemonImageWrapper>
-                    <Image
-                      src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${megaPokemon.id}.png`}
-                      alt={megaPokemon.pokemonName}
-                      fill={true}
-                    />
-                  </PokemonImageWrapper>
-                  <Heading>{megaPokemon.pokemonName}</Heading>
-                </span>
-              );
-            })}
-          </MegaRecommendation>
+          {event.recommendedMegas.length > 0 ? (
+            <MegaRecommendation>
+              {event.recommendedMegas?.map((megaPokemon) => {
+                return (
+                  <span key={megaPokemon.id}>
+                    {" "}
+                    <PokemonImageWrapper>
+                      <Image
+                        src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${megaPokemon.id}.png`}
+                        alt={megaPokemon.pokemonName}
+                        fill={true}
+                      />
+                    </PokemonImageWrapper>
+                    <Heading>{megaPokemon.pokemonName}</Heading>
+                  </span>
+                );
+              })}
+            </MegaRecommendation>
+          ) : (
+            <p>Keine</p>
+          )}
         </EventOverview>
 
         {event.specials.length > 0 && (
