@@ -3,7 +3,7 @@ import FilterBar from "@/components/FilterBar";
 import ModeBar from "@/components/ModeBar";
 import { Event, EventBasicAndId } from "@/types/event";
 import { EventAndRaidFilter } from "@/types/filter";
-import { filterEvents, filterRaids } from "@/utils/filter";
+import { filter as filterEventsOrRaids } from "@/utils/filter";
 import Head from "next/head";
 import useSWR from "swr";
 import useLocalStorageState from "use-local-storage-state";
@@ -49,8 +49,8 @@ export default function Home() {
   if (error || !events || raidError || !raid)
     return <p>Fehler beim Laden der Events</p>;
 
-  const filteredEvents = filterEvents(events, activeEventFilter);
-  const filteredRaids = filterRaids(raid, activeRaidFilter);
+  const filteredEvents = filterEventsOrRaids(events, activeEventFilter);
+  const filteredRaids = filterEventsOrRaids(raid, activeRaidFilter);
 
   function handleEventFilterClick(filter: EventAndRaidFilter) {
     if (filter === activeEventFilter) {
