@@ -5,36 +5,19 @@ import Head from "next/head";
 import { Event } from "@/types/event";
 import useSWR from "swr";
 import { useRef } from "react";
-import Delete from "@/assets/icons/delete.svg";
-import Edit from "@/assets/icons/edit.svg";
-import Link from "next/link";
-import { formatDateTimeWithWeekday } from "@/utils/formatDateTimeWithWeekday";
-import { priorityLevels } from "@/data/priorityLevels";
-import Image from "next/image";
 import {
-  ActionItem,
-  ActionList,
-  Button,
-  ButtonContainer,
   Container,
   DialogActions,
-  EventOverview,
-  Heading,
-  MegaRecommendation,
-  PriorityBadge,
   Section,
   StyledDialog,
   SubTitle,
-  TimeInfo,
-  Title,
-  TitleRow,
-} from "@/components/DetailView.styled";
-import { PokemonImageWrapper } from "@/components/Form.styled";
+} from "@/components/DetailView/DetailView.styled";
+import Overview from "@/components/DetailView/Overview";
 
 export default function EventDetailPage() {
   const router = useRouter();
 
-  const { id } = router.query;
+  const id = router.query.id as string;
 
   const dialogRef = useRef<HTMLDialogElement>(null);
 
@@ -65,6 +48,10 @@ export default function EventDetailPage() {
     }
   }
 
+  function handleModalClick() {
+    dialogRef.current?.showModal();
+  }
+
   return (
     <>
       <Head>
@@ -75,74 +62,7 @@ export default function EventDetailPage() {
         />
       </Head>
       <Container>
-        <EventOverview>
-          <TitleRow>
-            <Title>{event.name}</Title>
-            <ButtonContainer>
-              <Button
-                as={Link}
-                href={`/events/${id}/edit`}
-                aria-label="Event bearbeiten"
-                size="64px"
-              >
-                <Edit />
-              </Button>
-              <Button
-                onClick={() => dialogRef.current?.showModal()}
-                type="button"
-                aria-label="Event löschen"
-                size="48px"
-                $isDelete
-              >
-                <Delete />
-              </Button>
-            </ButtonContainer>
-          </TitleRow>
-          <TimeInfo>
-            {formatDateTimeWithWeekday(event.start)} -{" "}
-            {formatDateTimeWithWeekday(event.end)}
-          </TimeInfo>
-
-          <PriorityBadge priority={event.priority || 1}>
-            Priorität: {priorityLevels[event.priority || 1]} ({event.priority} /
-            5)
-          </PriorityBadge>
-
-          <Section>
-            <SubTitle>Vorbereitung</SubTitle>
-            <p>{event.preparation || "Keine"}</p>
-          </Section>
-
-          <h3>Erste Schritte, wenn das Event startet:</h3>
-
-          <ActionList>
-            {event.steps?.map((step) => (
-              <ActionItem key={step}>{step}</ActionItem>
-            ))}
-          </ActionList>
-          <strong>Empfohlene Mega-Entwicklung(en):</strong>
-          {event.recommendedMegas.length > 0 ? (
-            <MegaRecommendation>
-              {event.recommendedMegas?.map((megaPokemon) => {
-                return (
-                  <span key={megaPokemon.id}>
-                    {" "}
-                    <PokemonImageWrapper>
-                      <Image
-                        src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${megaPokemon.id}.png`}
-                        alt={megaPokemon.pokemonName}
-                        fill={true}
-                      />
-                    </PokemonImageWrapper>
-                    <Heading>{megaPokemon.pokemonName}</Heading>
-                  </span>
-                );
-              })}
-            </MegaRecommendation>
-          ) : (
-            <p>Keine</p>
-          )}
-        </EventOverview>
+        <Overview event={event} id={id} onClick={handleModalClick} />
 
         {event.specials.length > 0 && (
           <Section>
