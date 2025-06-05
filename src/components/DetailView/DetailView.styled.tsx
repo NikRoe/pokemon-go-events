@@ -18,14 +18,14 @@ const EventOverview = styled.section`
   gap: 1rem;
 `;
 
-const PriorityBadge = styled.div<{ priority: number }>`
+const PriorityBadge = styled.div<{ $priority: number }>`
   padding: 0.5rem 1rem;
   border-radius: 999px;
   font-weight: bold;
   text-align: center;
   color: white;
-  background-color: ${({ priority }) => {
-    switch (priority) {
+  background-color: ${({ $priority }) => {
+    switch ($priority) {
       case 1:
         return "#a0aec0";
       case 2:

@@ -62,7 +62,7 @@ export default function Overview({
         {formatDateTimeWithWeekday(start)} - {formatDateTimeWithWeekday(end)}
       </TimeInfo>
 
-      <PriorityBadge priority={priority || 1}>
+      <PriorityBadge $priority={priority || 1}>
         Priorität: {priorityLevels[priority || 1]} ({priority} / 5)
       </PriorityBadge>
 

@@ -21,30 +21,30 @@ export default function EditPage() {
   const { id } = router.query;
 
   const {
-    data: event,
+    data: raid,
     error,
     isLoading,
-  } = useSWR<Event>(id ? `/api/events/${id}` : null);
+  } = useSWR<Event>(id ? `/api/raids/${id}` : null);
 
-  if (isLoading) return <p>Lade Event…</p>;
+  if (isLoading) return <p>Lade Raid...</p>;
   if (error) return <p>Fehler beim Laden</p>;
-  if (!event) return <p>Kein Event gefunden</p>;
+  if (!raid) return <p>Kein Raid gefunden</p>;
 
-  async function handleEditEvent(updatedEvent: EventDetail) {
+  async function handleEditRaid(updatedRaid: EventDetail) {
     try {
-      const res = await fetch(`/api/events/${id}`, {
+      const res = await fetch(`/api/raids/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(updatedEvent),
+        body: JSON.stringify(updatedRaid),
       });
 
       if (!res.ok) {
-        throw new Error("Fehler beim Speichern des Events");
+        throw new Error("Fehler beim Speichern des Raids");
       }
 
       await res.json();
 
-      router.push(`/events/${id}`);
+      router.push(`/raids/${id}`);
     } catch (err) {
       console.error(err);
       alert("Beim Speichern ist ein Fehler aufgetreten.");
@@ -54,12 +54,12 @@ export default function EditPage() {
   return (
     <>
       <Head>
-        <title>Event bearbeiten | Pokémon GO Events & Raids</title>
-        <meta name="description" content="Pokemon Go Event bearbeiten" />
+        <title>Raid bearbeiten | Pokémon GO Events & Raids</title>
+        <meta name="description" content="Pokemon Go Raid bearbeiten" />
       </Head>
       <PageContainer>
-        <h1>Event bearbeiten</h1>
-        <Form onSubmit={handleEditEvent} defaultValue={event} />
+        <h1>Raid bearbeiten</h1>
+        <Form onSubmit={handleEditRaid} defaultValue={raid} isRaidForm={true} />
       </PageContainer>
     </>
   );
