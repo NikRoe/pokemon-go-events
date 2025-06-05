@@ -1,35 +1,17 @@
 import EventsGrid from "@/components/EventsGrid";
 import FilterBar from "@/components/FilterBar";
 import ModeBar from "@/components/ModeBar";
-import { Event, EventBasicAndId } from "@/types/event";
+import { Event } from "@/types/event";
 import { EventAndRaidFilter } from "@/types/filter";
 import { filter as filterEventsOrRaids } from "@/utils/filter";
 import Head from "next/head";
 import useSWR from "swr";
 import useLocalStorageState from "use-local-storage-state";
 
-const dummmyRaid: EventBasicAndId[] = [
-  {
-    _id: "1",
-    name: "Mega-Raids: Groudon",
-    start: "2025-06-05T10:00",
-    end: "2025-06-14T10:00",
-    preparation: "Team aus Wasser, Grass und Eis zusammenstellen.",
-    focus: [
-      {
-        id: 383,
-        pokemonName: "Groudon",
-        reasons: [1],
-      },
-    ],
-    priority: 5,
-  },
-];
-
 export default function Home() {
   const { data: events, error, isLoading } = useSWR<Event[]>("/api/events");
   const {
-    data: raid,
+    data: raids,
     error: raidError,
     isLoading: raidIsLoading,
   } = useSWR<Event[]>("/api/raids");
@@ -46,11 +28,11 @@ export default function Home() {
     });
 
   if (isLoading || raidIsLoading) return <p>Lade Events…</p>;
-  if (error || !events || raidError || !raid)
+  if (error || !events || raidError || !raids)
     return <p>Fehler beim Laden der Events</p>;
 
   const filteredEvents = filterEventsOrRaids(events, activeEventFilter);
-  const filteredRaids = filterEventsOrRaids(raid, activeRaidFilter);
+  const filteredRaids = filterEventsOrRaids(raids, activeRaidFilter);
 
   function handleEventFilterClick(filter: EventAndRaidFilter) {
     if (filter === activeEventFilter) {
@@ -101,8 +83,8 @@ export default function Home() {
             onFilterClick={handleRaidFilterClick}
           />
 
-          {dummmyRaid && filteredRaids.length > 0 ? (
-            <EventsGrid events={filteredRaids} />
+          {raids && filteredRaids.length > 0 ? (
+            <EventsGrid events={filteredRaids} isRaidGrid={true} />
           ) : (
             <p>Keine Raids vorhanden.</p>
           )}

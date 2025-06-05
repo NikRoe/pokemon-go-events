@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 interface EventsGridProps {
   events: EventBasicAndId[];
+  isRaidGrid?: boolean;
 }
 
 const Grid = styled(motion.div)`
@@ -40,7 +41,7 @@ const cardVariants = {
   exit: { opacity: 0, scale: 0.95 },
 };
 
-function EventsGrid({ events }: EventsGridProps) {
+function EventsGrid({ events, isRaidGrid }: EventsGridProps) {
   return (
     <Grid
       variants={gridVariants}
@@ -59,7 +60,7 @@ function EventsGrid({ events }: EventsGridProps) {
             transition={{ duration: 0.3 }}
             layout
           >
-            <EventCard event={event} />
+            <EventCard event={event} isRaidGrid={isRaidGrid} />
           </MotionCard>
         ))}
       </AnimatePresence>

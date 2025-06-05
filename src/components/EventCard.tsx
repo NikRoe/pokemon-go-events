@@ -4,6 +4,7 @@ import Link from "next/link";
 
 interface EventCardProps {
   event: EventBasicAndId;
+  isRaidGrid?: boolean;
 }
 
 const Card = styled(Link)`
@@ -54,9 +55,9 @@ function formatTime(isoString: string): string {
   });
 }
 
-export default function EventCard({ event }: EventCardProps) {
+export default function EventCard({ event, isRaidGrid }: EventCardProps) {
   return (
-    <Card href={`/events/${event._id}`}>
+    <Card href={isRaidGrid ? `/raids/${event._id}` : `/events/${event._id}`}>
       <h2>{event.name}</h2>
 
       <TimeRange>
