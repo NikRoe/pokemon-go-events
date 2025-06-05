@@ -1,1 +1,1 @@
-export type EventFilter = "active" | "past" | "upcoming" | null;
+export type EventAndRaidFilter = "active" | "past" | "upcoming" | null;

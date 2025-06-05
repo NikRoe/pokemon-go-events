@@ -47,4 +47,8 @@ export const GlobalStyles = createGlobalStyle`
     font-weight: bold;
     line-height: 1.2;
   }
+
+  p {
+    text-align: center;
+  }
 `;
