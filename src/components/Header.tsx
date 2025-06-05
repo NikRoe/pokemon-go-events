@@ -5,7 +5,6 @@ const StyledHeader = styled.header`
   display: flex;
   justify-content: space-around;
   align-items: center;
-
   max-width: 500px;
   margin: 1rem auto;
 `;
@@ -13,7 +12,7 @@ const StyledHeader = styled.header`
 export default function Header() {
   return (
     <StyledHeader>
-      <h1>Pokémon Go Events</h1>
+      <h1>Pokémon Go Events and Raids</h1>
       <ThemeToggle />
     </StyledHeader>
   );

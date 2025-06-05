@@ -48,6 +48,10 @@ export const GlobalStyles = createGlobalStyle`
     line-height: 1.2;
   }
 
+  h1 {
+    font-size: x-large;
+  }
+
   p {
     text-align: center;
   }
