@@ -1,17 +1,41 @@
 import EventsGrid from "@/components/EventsGrid";
 import FilterBar from "@/components/FilterBar";
 import ModeBar from "@/components/ModeBar";
-import { Event } from "@/types/event";
+import { Event, EventBasicAndId } from "@/types/event";
 import { EventAndRaidFilter } from "@/types/filter";
-import { filterEvents } from "@/utils/filterEvents";
+import { filterEvents, filterRaids } from "@/utils/filter";
 import Head from "next/head";
-import { useState } from "react";
 import useSWR from "swr";
 import useLocalStorageState from "use-local-storage-state";
 
+const dummmyRaid: EventBasicAndId[] = [
+  {
+    _id: "1",
+    name: "Mega-Raids: Groudon",
+    start: "2025-06-05T10:00",
+    end: "2025-06-14T10:00",
+    preparation: "Team aus Wasser, Grass und Eis zusammenstellen.",
+    focus: [
+      {
+        id: 383,
+        pokemonName: "Groudon",
+        reasons: [1],
+      },
+    ],
+    priority: 5,
+  },
+];
+
 export default function Home() {
   const { data: events, error, isLoading } = useSWR<Event[]>("/api/events");
-  const [mode, setMode] = useState("event");
+  const {
+    data: raid,
+    error: raidError,
+    isLoading: raidIsLoading,
+  } = useSWR<Event[]>("/api/raids");
+  const [mode, setMode] = useLocalStorageState("mode", {
+    defaultValue: "event",
+  });
   const [activeEventFilter, setActiveEventFilter] =
     useLocalStorageState<EventAndRaidFilter>("activeEventFilter", {
       defaultValue: "active",
@@ -21,10 +45,12 @@ export default function Home() {
       defaultValue: "active",
     });
 
-  if (isLoading) return <p>Lade Events…</p>;
-  if (error || !events) return <p>Fehler beim Laden der Events</p>;
+  if (isLoading || raidIsLoading) return <p>Lade Events…</p>;
+  if (error || !events || raidError || !raid)
+    return <p>Fehler beim Laden der Events</p>;
 
   const filteredEvents = filterEvents(events, activeEventFilter);
+  const filteredRaids = filterRaids(raid, activeRaidFilter);
 
   function handleEventFilterClick(filter: EventAndRaidFilter) {
     if (filter === activeEventFilter) {
@@ -74,14 +100,12 @@ export default function Home() {
             activeFilter={activeRaidFilter}
             onFilterClick={handleRaidFilterClick}
           />
-          <p>Hier kommt noch was</p>
-          {/* Überarbeiten */}
 
-          {/* {events && events.length > 0 ? (
-            <EventsGrid events={filteredEvents} />
+          {dummmyRaid && filteredRaids.length > 0 ? (
+            <EventsGrid events={filteredRaids} />
           ) : (
             <p>Keine Raids vorhanden.</p>
-          )} */}
+          )}
         </>
       )}
     </>

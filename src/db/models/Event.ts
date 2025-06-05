@@ -17,7 +17,7 @@ export interface EventDocument extends Document {
   recommendedMegas: { id: number; pokemonName: string }[];
 }
 
-const FocusSchema = new Schema(
+export const FocusSchema = new Schema(
   {
     id: { type: Number, required: true },
     pokemonName: { type: String, required: true },
@@ -26,7 +26,7 @@ const FocusSchema = new Schema(
   { _id: false }
 );
 
-const RecommendedMegasSchema = new Schema(
+export const RecommendedMegasSchema = new Schema(
   {
     id: { type: Number, required: true },
     pokemonName: { type: String, required: true },

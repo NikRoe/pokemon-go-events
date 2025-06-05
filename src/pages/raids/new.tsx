@@ -15,19 +15,19 @@ const PageContainer = styled.div`
   }
 `;
 
-export default function NewEventPage() {
+export default function NewRaidPage() {
   const router = useRouter();
 
-  async function handleAddEvent(newEvent: EventDetail) {
+  async function handleAddRaid(newRaid: EventDetail) {
     try {
-      const res = await fetch("/api/events", {
+      const res = await fetch("/api/raids", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newEvent),
+        body: JSON.stringify(newRaid),
       });
 
       if (!res.ok) {
-        throw new Error("Fehler beim Speichern des Events");
+        throw new Error("Fehler beim Speichern des Raids");
       }
 
       await res.json();
@@ -42,12 +42,12 @@ export default function NewEventPage() {
   return (
     <>
       <Head>
-        <title>Neues Event hinzufügen | Pokémon GO Events</title>
-        <meta name="description" content="Neues Pokemon Go Event hinzufügen" />
+        <title>Neuen Raid hinzufügen | Pokémon GO Events & Raids</title>
+        <meta name="description" content="Neuen Pokemon Go Raid hinzufügen" />
       </Head>
       <PageContainer>
-        <h1>Neues Event hinzufügen</h1>
-        <Form onSubmit={handleAddEvent} />
+        <h1>Neuen Raid hinzufügen</h1>
+        <Form onSubmit={handleAddRaid} isRaidForm={true} />
       </PageContainer>
     </>
   );

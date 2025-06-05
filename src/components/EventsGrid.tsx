@@ -1,10 +1,10 @@
 import styled from "styled-components";
 import EventCard from "@/components/EventCard";
-import { Event } from "@/types/event";
+import { EventBasicAndId } from "@/types/event";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface EventsGridProps {
-  events: Event[];
+  events: EventBasicAndId[];
 }
 
 const Grid = styled(motion.div)`
@@ -51,7 +51,7 @@ function EventsGrid({ events }: EventsGridProps) {
       <AnimatePresence>
         {events.map((event) => (
           <MotionCard
-            key={event._id}
+            key={event.name}
             variants={cardVariants}
             initial="hidden"
             animate="visible"

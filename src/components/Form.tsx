@@ -2,7 +2,7 @@ import Remove from "@/assets/icons/remove.svg";
 import { eventSpecials } from "@/data/eventSpecials";
 import { pokemonList } from "@/data/pokemonList";
 import { useState } from "react";
-import { Event, EventPriority, FrontendEvent } from "@/types/event";
+import { Event, EventPriority, EventDetail } from "@/types/event";
 import FirstStepsInput from "./FirstStepsInput";
 import Priority from "./EventPriority";
 import {
@@ -24,9 +24,11 @@ import Search from "./Search";
 export default function Form({
   onSubmit,
   defaultValue,
+  isRaidForm,
 }: {
-  onSubmit: (newEvent: FrontendEvent) => void;
+  onSubmit: (newEvent: EventDetail) => void;
   defaultValue?: Event;
+  isRaidForm?: boolean;
 }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [megaSearchTerm, setMegaSearchTerm] = useState("");
@@ -81,7 +83,7 @@ export default function Form({
       };
     });
 
-    const newEvent: FrontendEvent = {
+    const newEvent: EventDetail = {
       ...data,
       preparation: data.preparation || null,
       specials: selectedSpecials,
@@ -154,7 +156,7 @@ export default function Form({
   return (
     <FormContainer onSubmit={handleSubmit}>
       <FormGroup>
-        <Label htmlFor="name">Event-Name*</Label>
+        <Label htmlFor="name">{isRaidForm ? "Raid" : "Event"}-Name*</Label>
         <Input
           id="name"
           name="name"
@@ -200,7 +202,14 @@ export default function Form({
         />
       </FormGroup>
 
-      <FirstStepsInput firstSteps={firstSteps} setFirstSteps={setFirstSteps} />
+      {/* Steps are only needed for Events  */}
+
+      {!isRaidForm && (
+        <FirstStepsInput
+          firstSteps={firstSteps}
+          setFirstSteps={setFirstSteps}
+        />
+      )}
 
       <Search
         title="Empfohlene Mega-Entwicklungen"
@@ -219,32 +228,36 @@ export default function Form({
         focusMode={false}
       />
 
-      <FormGroup>
-        <Label htmlFor="specials">Besonderheiten*</Label>
-        <Select
-          id="specials"
-          name="specials"
-          value={""}
-          onChange={(event) => {
-            const selected = Number(event.target.value);
-            setSelectedSpecials((prev) =>
-              prev.includes(selected) ? prev : [selected, ...prev]
-            );
-          }}
-          required={selectedSpecials.length === 0}
-        >
-          <option value="">
-            ---Wähle eine oder mehrere Besonderheiten aus---
-          </option>
-          {eventSpecials
-            .filter((special) => !selectedSpecials?.includes(special.id))
-            .map((special) => (
-              <option key={special.id} value={special.id}>
-                {special.textContent}
-              </option>
-            ))}
-        </Select>
-      </FormGroup>
+      {/* Besonderheiten are only needed for Events  */}
+
+      {!isRaidForm && (
+        <FormGroup>
+          <Label htmlFor="specials">Besonderheiten*</Label>
+          <Select
+            id="specials"
+            name="specials"
+            value={""}
+            onChange={(event) => {
+              const selected = Number(event.target.value);
+              setSelectedSpecials((prev) =>
+                prev.includes(selected) ? prev : [selected, ...prev]
+              );
+            }}
+            required={selectedSpecials.length === 0}
+          >
+            <option value="">
+              ---Wähle eine oder mehrere Besonderheiten aus---
+            </option>
+            {eventSpecials
+              .filter((special) => !selectedSpecials?.includes(special.id))
+              .map((special) => (
+                <option key={special.id} value={special.id}>
+                  {special.textContent}
+                </option>
+              ))}
+          </Select>
+        </FormGroup>
+      )}
 
       <List>
         {selectedSpecials.map((specialId) => {
@@ -290,7 +303,7 @@ export default function Form({
         }
       />
 
-      <SubmitButton type="submit">Event speichern</SubmitButton>
+      <SubmitButton type="submit">Speichern</SubmitButton>
     </FormContainer>
   );
 }

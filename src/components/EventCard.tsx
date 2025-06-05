@@ -1,9 +1,9 @@
-import { Event } from "@/types/event";
+import { EventBasicAndId } from "@/types/event";
 import styled from "styled-components";
 import Link from "next/link";
 
 interface EventCardProps {
-  event: Event;
+  event: EventBasicAndId;
 }
 
 const Card = styled(Link)`

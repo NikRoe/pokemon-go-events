@@ -43,7 +43,7 @@ export default function Priority({
 }) {
   return (
     <FormGroup htmlFor="priority">
-      Event Priorität:
+      Priorität:
       <Select
         name="priority"
         id="priority"
