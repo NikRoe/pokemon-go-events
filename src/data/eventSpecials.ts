@@ -42,4 +42,6 @@ export const eventSpecials = [
   { id: 22, textContent: "2-Fache Menge XP beim Fangen" },
   { id: 23, textContent: "3-Fache Menge XP beim Fangen" },
   { id: 24, textContent: "2-Fache Menge Sternenstaub beim Fangen" },
+  { id: 25, textContent: "4-Fache Menge Sternenstaub beim Fangen" },
+  { id: 26, textContent: "4-Fache Menge XP beim Fangen" },
 ];
